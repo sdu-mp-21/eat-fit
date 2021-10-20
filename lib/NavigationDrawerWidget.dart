@@ -1,8 +1,15 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 
-class SideNavigationBar extends StatelessWidget {
+class SideNavigationBar extends StatefulWidget {
   const SideNavigationBar({Key? key}) : super(key: key);
+
+  @override
+  _SideNavigationBarState createState() => _SideNavigationBarState();
+}
+
+class _SideNavigationBarState extends State<SideNavigationBar> {
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +54,7 @@ class SideNavigationBar extends StatelessWidget {
                 Text(
                   'Язык',
                   style: TextStyle(
-                    fontSize: 20
+                      fontSize: 20
                   ),
                 ),
               ],
@@ -55,9 +62,14 @@ class SideNavigationBar extends StatelessWidget {
             SizedBox(height: 15,),
             Row(
               children: [
-                Icon(
-                  Icons.palette_outlined,
-                  size: 35,
+                IconButton(
+                  onPressed: (() {
+
+                  }),
+                  icon: Icon(
+                    Icons.palette_outlined,
+                    size: 35,
+                  ),
                 ),
                 SizedBox(width: 15),
                 Text(
@@ -82,13 +94,21 @@ class SideNavigationBar extends StatelessWidget {
                       fontSize: 20
                   ),
                 ),
+                // Expanded(
+                //   child: Align(
+                //     alignment: FractionalOffset.centerRight,
+                //     child: CupertinoSwitch(
+                //
+                //     ),
+                //   ),
+                // ),
               ],
             ),
             SizedBox(height: 30,),
             Text(
               'Данные',
               style: TextStyle(
-                fontSize: 20
+                  fontSize: 20
               ),
             ),
             SizedBox(height: 20,),
@@ -129,4 +149,3 @@ class SideNavigationBar extends StatelessWidget {
     );
   }
 }
-

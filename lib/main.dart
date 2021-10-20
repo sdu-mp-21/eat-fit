@@ -15,6 +15,7 @@ void main() => runApp(MaterialApp(
     '/menu': (context) => const MenuPage(),
   },
   debugShowCheckedModeBanner: false,
+  themeMode: ThemeMode.system,
 ));
 
 
@@ -26,7 +27,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  int _currentIndex = 0;
+  int _currentIndex = 1;
 
   List<Widget> pages = [
     TrainingPage(),
@@ -49,28 +50,27 @@ class _HomeState extends State<Home> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         iconSize: 30,
-        type: BottomNavigationBarType.shifting,
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: Colors.pink,
+        unselectedItemColor: Colors.grey,
         items: [
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.account_balance,
+              Icons.sports,
             ),
-            title: Text('Training'),
-            backgroundColor: Colors.purple[500],
+            title: Text('Тренировка'),
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.attach_money,
+              Icons.accessibility_new,
             ),
-            title: Text('Main'),
-            backgroundColor: Colors.teal,
+            title: Text('Главная'),
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.account_balance_wallet_rounded,
+              Icons.food_bank,
             ),
-            title: Text('Menu'),
-            backgroundColor: Colors.deepOrange,
+            title: Text('Питание'),
           ),
         ],
         onTap: (index) {
