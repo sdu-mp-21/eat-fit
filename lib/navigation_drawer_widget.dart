@@ -20,21 +20,28 @@ class _SideNavigationBarState extends State<SideNavigationBar> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              children: [
-                Icon(
-                  Icons.account_circle_sharp,
-                  size: 70,
+            new GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, '/profile');
+              },
+              child: Container(
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.account_circle_sharp,
+                      size: 70,
+                    ),
+                    SizedBox(width: 5),
+                    Text(
+                      'Профиль',
+                      style: TextStyle(
+                        fontSize: 24,
+                        color: Colors.black,
+                      ),
+                    ),
+                  ],
                 ),
-                SizedBox(width: 15),
-                Text(
-                  'Профиль',
-                  style: TextStyle(
-                    fontSize: 24,
-                    color: Colors.black,
-                  ),
-                ),
-              ],
+              ),
             ),
             SizedBox(height: 30,),
             Text(
@@ -62,14 +69,9 @@ class _SideNavigationBarState extends State<SideNavigationBar> {
             SizedBox(height: 15,),
             Row(
               children: [
-                IconButton(
-                  onPressed: (() {
-
-                  }),
-                  icon: Icon(
-                    Icons.palette_outlined,
-                    size: 35,
-                  ),
+                Icon(
+                  Icons.palette_outlined,
+                  size: 35,
                 ),
                 SizedBox(width: 15),
                 Text(
@@ -94,14 +96,6 @@ class _SideNavigationBarState extends State<SideNavigationBar> {
                       fontSize: 20
                   ),
                 ),
-                // Expanded(
-                //   child: Align(
-                //     alignment: FractionalOffset.centerRight,
-                //     child: CupertinoSwitch(
-                //
-                //     ),
-                //   ),
-                // ),
               ],
             ),
             SizedBox(height: 30,),

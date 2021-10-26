@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'lockscreen.dart';
-import 'NavigationDrawerWidget.dart';
-import 'TrainingPage.dart';
-import 'MenuPage.dart';
-import 'MainPage.dart';
+import 'views/lockscreen.dart';
+import 'navigation_drawer_widget.dart';
+import 'training_page.dart';
+import 'menu_page.dart';
+import 'main_page.dart';
+import 'profile_page.dart';
+import 'edit_profile_page.dart';
 
 
 void main() => runApp(MaterialApp(
@@ -13,9 +15,10 @@ void main() => runApp(MaterialApp(
     '/lock': (context) => const LockScreen(),
     '/training': (context) => const TrainingPage(),
     '/menu': (context) => const MenuPage(),
+    '/profile': (context) => const ProfilePage(),
+    '/edit_profile_page': (context) => const EditProfilePage(),
   },
   debugShowCheckedModeBanner: false,
-  themeMode: ThemeMode.system,
 ));
 
 
@@ -40,7 +43,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       drawer: SideNavigationBar(),
       appBar: AppBar(
-        title: Text('Eat and Fit'),
+        title: Text('EatFit'),
         backgroundColor: Color.fromRGBO(39, 16, 51, 1),
         centerTitle: true,
       ),
