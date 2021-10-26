@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_team_project/recipes_pages.dart';
+import 'package:flutter_team_project/views/recipes_pages.dart';
 import 'package:flutter_team_project/views/favorites_page.dart';
 
-import 'calories_page.dart';
+import 'views/calories_page.dart';
 
 
 class MenuPage extends StatefulWidget {
