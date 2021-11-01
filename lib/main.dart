@@ -6,6 +6,7 @@ import 'menu_page.dart';
 import 'main_page.dart';
 import 'profile_page.dart';
 import 'edit_profile_page.dart';
+import 'views/calories_info_dart.dart';
 
 
 void main() => runApp(MaterialApp(
@@ -17,6 +18,7 @@ void main() => runApp(MaterialApp(
     '/menu': (context) => const MenuPage(),
     '/profile': (context) => const ProfilePage(),
     '/edit_profile_page': (context) => const EditProfilePage(),
+    '/calories_info_page': (context) => const CaloriesInfo(),
   },
   debugShowCheckedModeBanner: false,
 ));
