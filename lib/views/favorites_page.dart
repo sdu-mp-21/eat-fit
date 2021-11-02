@@ -39,7 +39,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
     return Row(
       children: [
         Image.asset(
-          'assets/$imageName.png',
+          'assets/FavoritesPack/$imageName.png',
           width: 80,
           height: 80,
         ),
