@@ -128,11 +128,11 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.vertical,
-      child: Container(
-        padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
-        color: color,
+    return Container(
+      padding: EdgeInsets.fromLTRB(20, 0, 20, 20),
+      color: color,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
         child: Column(
           children: [
             Container(
