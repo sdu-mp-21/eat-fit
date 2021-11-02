@@ -51,7 +51,7 @@ class _CaloriesPageState extends State<CaloriesPage> {
             navigate(context, category1);
           },
           child: Image.asset(
-            'assets/$category1.png',
+            'assets/calories_page_pack/$category1.png',
             fit: BoxFit.cover,
             width: 100,
             height: 100,
@@ -62,7 +62,7 @@ class _CaloriesPageState extends State<CaloriesPage> {
             navigate(context, category2);
           },
           child: Image.asset(
-            'assets/$category2.png',
+            'assets/calories_page_pack/$category2.png',
             fit: BoxFit.cover,
             width: 100,
             height: 100,
