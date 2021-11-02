@@ -33,19 +33,19 @@ class _ProfilePageState extends State<ProfilePage> {
     dirPath = dir.path;
   }
 
-  // String convertToJson(Person person) {
-  //   String json = jsonEncode(person);
-  //   return json;
-  // }
-  //
-  // Future writeFile() async {
-  //   Person person = new Person('Нургуль Мажит', 'Набрать мышечную массу', '18', '20.54', '165', '55');
-  //   try {
-  //     await myFile!.writeAsString(convertToJson(person));
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
+  String convertToJson(Person person) {
+    String json = jsonEncode(person);
+    return json;
+  }
+
+  Future writeFile() async {
+    Person person = new Person('Равиль Аман', 'Набрать мышечную массу', '19', '19.57', '178', '62');
+    try {
+      await myFile!.writeAsString(convertToJson(person));
+    } catch (e) {
+      print(e);
+    }
+  }
 
   Future readFile() async{
     try {
@@ -65,13 +65,16 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> refreshData() async{
-    setState(() {});
+    setState(() {
+      readFile();
+    });
   }
 
   @override
   void initState() {
     getPath().then((_) {
       myFile = File('$dirPath/person.txt');
+      // writeFile();
       readFile();
     });
     super.initState();
@@ -97,10 +100,11 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ],
       ),
-      body: Center(
-        child: RefreshIndicator(
-          key: _refreshIndicatorKey,
-          onRefresh: refreshData,
+      body: RefreshIndicator(
+        key: _refreshIndicatorKey,
+        onRefresh: refreshData,
+        child: SingleChildScrollView(
+          physics: AlwaysScrollableScrollPhysics(),
           child: Column(
             children: [
               Container(

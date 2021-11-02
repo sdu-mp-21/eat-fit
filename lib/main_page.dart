@@ -4,7 +4,9 @@ import 'package:connectivity/connectivity.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:intl/intl.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
 
 
 class MainPage extends StatefulWidget {
@@ -31,25 +33,15 @@ class _MainPageState extends State<MainPage> {
   int timeCoefficient = 0;
   double calorieBurnCoefficient = 1.6;
   int ccalBurn = 0;
-  int ccalCons = 3047;
+  int ccalMustBurn = 2300;
+  int ccalCons = 1250;
+  int ccalMustCons = 2600;
+
+  double burnPercentage = 0;
+  double consPercentage = 0;
 
   void checkConnection() async {
-    var connectivityResult = await Connectivity().checkConnectivity();
-    if (connectivityResult == ConnectivityResult.mobile) {
-      if (await DataConnectionChecker().hasConnection) {
-        isThereConnection = true;
-      } else {
-        isThereConnection = false;
-      }
-    } else if (ConnectivityResult == ConnectivityResult.wifi) {
-      if (await DataConnectionChecker().hasConnection) {
-        isThereConnection = true;
-      } else {
-        isThereConnection = false;
-      }
-    } else {
-      isThereConnection = false;
-    }
+    isThereConnection = await InternetConnectionChecker().hasConnection;
     _getWeatherData();
   }
 
@@ -100,7 +92,7 @@ class _MainPageState extends State<MainPage> {
 
   ///
   /// Здесь я должен потом написать метод где считаю с файла данные пользователя
-  /// и всчитаю коэффициент сжигания калории в минуту
+  /// и высчитаю коэффициент сжигания калории в минуту
   ///
 
   Future getDateDifference() async{
@@ -117,6 +109,12 @@ class _MainPageState extends State<MainPage> {
     setState(() {
       ccalBurn = (timeCoefficient * calorieBurnCoefficient).toInt();
     });
+    return ccalBurn;
+  }
+
+  void getPercentages() async{
+    burnPercentage = await calculateBurnedCalories() / ccalMustBurn;
+    consPercentage = ccalCons / ccalMustCons;
   }
 
   @override
@@ -124,6 +122,7 @@ class _MainPageState extends State<MainPage> {
     setDate();
     checkConnection();
     calculateBurnedCalories();
+    getPercentages();
     super.initState();
   }
 
@@ -198,47 +197,124 @@ class _MainPageState extends State<MainPage> {
           //   },
           //   child: Text('theme'),
           // ),
-          SizedBox(height: 10),
+          SizedBox(height: 15),
           Container(
-            padding: EdgeInsets.fromLTRB(25, 20, 25, 20),
+            padding: EdgeInsets.fromLTRB(45, 10, 45, 10),
             decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  colors: [Colors.redAccent, Colors.orange],
+              color: Colors.white,
+              borderRadius: BorderRadius.all(Radius.circular(13)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 3,
+                  blurRadius: 5,
+                ),
+              ],
+            ),
+            child: textWidgetBuilder('Статистика на сегодня:', 22, Colors.black),
+          ),
+          SizedBox(height: 25),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Container(
+                padding: EdgeInsets.fromLTRB(15, 12, 15, 12),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(18)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    textWidgetBuilder('Сожжено:', 18, Colors.black),
+                    SizedBox(height: 7,),
+                    CircularPercentIndicator(
+                      radius: 130,
+                      lineWidth: 10,
+                      backgroundColor: Colors.white,
+                      percent: burnPercentage,
+                      // progressColor: ,
+                      circularStrokeCap: CircularStrokeCap.round,
+                      animation: true,
+                      center: textWidgetBuilder('$ccalBurn \nккал', 22, Colors.black),
+                    ),
+                  ],
+                ),
               ),
+              Container(
+                padding: EdgeInsets.fromLTRB(15, 12, 15, 12),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(18)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                    ),
+                  ],
+                ),
+                child: Column(
+                  children: [
+                    textWidgetBuilder('Потреблено:', 18, Colors.black),
+                    SizedBox(height: 7,),
+                    CircularPercentIndicator(
+                      radius: 130,
+                      lineWidth: 10,
+                      backgroundColor: Colors.white,
+                      percent: consPercentage,
+                      progressColor: Colors.green,
+                      circularStrokeCap: CircularStrokeCap.round,
+                      animation: true,
+                      center: textWidgetBuilder('$ccalCons \nккал', 22, Colors.black),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: 20,),
+          Container(
+            padding: EdgeInsets.fromLTRB(40, 12, 40, 12),
+            decoration: BoxDecoration(
+              color: Colors.white,
               borderRadius: BorderRadius.all(Radius.circular(18)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                ),
+              ],
             ),
             child: Column(
               children: [
-                Row(
-                  children: [
-                    Icon(Icons.local_fire_department, size: 30, color: Colors.white,),
-                    SizedBox(width: 5,),
-                    textWidgetBuilder(':', 28, Colors.white),
-                    SizedBox(width: 30,),
-                    textWidgetBuilder('$ccalBurn ccal', 26, Colors.white),
-                  ],
-                ),
-                SizedBox(height: 30,),
-                Row(
-                  children: [
-                    Icon(Icons.set_meal, size: 30, color: Colors.white,),
-                    SizedBox(width: 5,),
-                    textWidgetBuilder(':', 28, Colors.white),
-                    SizedBox(width: 30,),
-                    textWidgetBuilder('$ccalCons ccal', 26, Colors.white),
-                  ],
-                ),
-                SizedBox(height: 30,),
-                Row(
-                  children: [
-                    Icon(Icons.directions_walk, size: 30, color: Colors.white,),
-                    SizedBox(width: 5,),
-                    textWidgetBuilder(':', 28, Colors.white),
-                    SizedBox(width: 30,),
-                    textWidgetBuilder('$steps steps', 26, Colors.white),
-                  ],
+                textWidgetBuilder('Сделано шагов:', 18, Colors.black),
+                SizedBox(height: 7,),
+                CircularPercentIndicator(
+                  radius: 130,
+                  lineWidth: 10,
+                  backgroundColor: Colors.white,
+                  percent: 0.421,
+                  progressColor: Colors.blueAccent,
+                  circularStrokeCap: CircularStrokeCap.round,
+                  animation: true,
+                  center: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      textWidgetBuilder('$steps', 22, Colors.black),
+                      Icon(
+                        Icons.directions_walk,
+                        size: 23,
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

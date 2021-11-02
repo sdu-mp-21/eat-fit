@@ -30,6 +30,7 @@ class _SideNavigationBarState extends State<SideNavigationBar> {
                     Icon(
                       Icons.account_circle_sharp,
                       size: 70,
+                      color: Colors.blue,
                     ),
                     SizedBox(width: 5),
                     Text(
@@ -55,6 +56,7 @@ class _SideNavigationBarState extends State<SideNavigationBar> {
               children: [
                 Icon(
                   Icons.translate,
+                  color: Colors.green,
                   size: 35,
                 ),
                 SizedBox(width: 15),
@@ -71,6 +73,7 @@ class _SideNavigationBarState extends State<SideNavigationBar> {
               children: [
                 Icon(
                   Icons.palette_outlined,
+                  color: Colors.pink,
                   size: 35,
                 ),
                 SizedBox(width: 15),
@@ -87,6 +90,7 @@ class _SideNavigationBarState extends State<SideNavigationBar> {
               children: [
                 Icon(
                   Icons.fingerprint,
+                  color: Colors.deepPurple,
                   size: 35,
                 ),
                 SizedBox(width: 15),
@@ -110,6 +114,7 @@ class _SideNavigationBarState extends State<SideNavigationBar> {
               children: [
                 Icon(
                   Icons.replay_outlined,
+                  color: Colors.red[600],
                   size: 35,
                 ),
                 SizedBox(width: 15),
@@ -126,6 +131,7 @@ class _SideNavigationBarState extends State<SideNavigationBar> {
               children: [
                 Icon(
                   Icons.info_outline,
+                  color: Colors.amber,
                   size: 35,
                 ),
                 SizedBox(width: 15),
