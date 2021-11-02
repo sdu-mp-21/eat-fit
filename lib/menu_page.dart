@@ -25,82 +25,64 @@ class _MenuPageState extends State<MenuPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(10, 5, 10, 0),
+      padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
       child: Column(
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  IconButton(
-                    onPressed: () {
+                  GestureDetector(
+                    onTap: () {
                       setState(() {
                         currentPageIndex = 0;
                       });
                     },
-                    icon: Icon(
-                      Icons.book_outlined,
-                      size: 50,
-                      color: Colors.blueAccent,
+                    child: Image.asset(
+                      'assets/recipe-book.png',
+                      width: 50,
+                      height: 50,
                     ),
                   ),
-                  SizedBox(height: 15,),
-                  Text(
-                    'Рецепты',
-                    style: TextStyle(
-                      fontSize: 16,
-                    ),
-                  ),
+                  setText('Рецепты', 16, Colors.black),
                 ],
               ),
               Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  IconButton(
-                    onPressed: () {
+                  GestureDetector(
+                    onTap: () {
                       setState(() {
                         currentPageIndex = 1;
                       });
                     },
-                    icon: Icon(
-                      Icons.favorite_border_outlined,
-                      color: Colors.red,
-                      size: 50,
+                    child: Image.asset(
+                      'assets/favorite.png',
+                      width: 50,
+                      height: 50,
                     ),
                   ),
-                  SizedBox(height: 15,),
-                  Text(
-                    'Избранное',
-                    style: TextStyle(
-                      fontSize: 16,
-                    ),
-                  ),
+                  setText('Избранное', 16, Colors.black),
                 ],
               ),
               Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  IconButton(
-                    onPressed: () {
+                  GestureDetector(
+                    onTap: () {
                       setState(() {
                         currentPageIndex = 2;
                       });
                     },
-                    icon: Icon(
-                      Icons.table_view_sharp,
-                      color: Colors.green,
-                      size: 50,
+                    child: Image.asset(
+                      'assets/calories.png',
+                      width: 50,
+                      height: 50,
                     ),
                   ),
-                  SizedBox(height: 15,),
-                  Text(
-                    'Калорий',
-                    style: TextStyle(
-                      fontSize: 16,
-                    ),
-                  ),
+                  setText('Калории', 16, Colors.black),
                 ],
               ),
             ],
@@ -112,6 +94,16 @@ class _MenuPageState extends State<MenuPage> {
           ),
           pages[currentPageIndex],
         ],
+      ),
+    );
+  }
+
+  Widget setText(String text, double fontSize, Color fontColor) {
+    return Text(
+      '$text',
+      style: TextStyle(
+        fontSize: fontSize,
+        color: fontColor,
       ),
     );
   }
