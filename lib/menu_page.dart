@@ -41,7 +41,7 @@ class _MenuPageState extends State<MenuPage> {
                       });
                     },
                     child: Image.asset(
-                      'assets/recipe-book.png',
+                      'assets/MenuPack/recipe-book.png',
                       width: 50,
                       height: 50,
                     ),
@@ -59,7 +59,7 @@ class _MenuPageState extends State<MenuPage> {
                       });
                     },
                     child: Image.asset(
-                      'assets/favorite.png',
+                      'assets/MenuPack/favorite.png',
                       width: 50,
                       height: 50,
                     ),
@@ -77,7 +77,7 @@ class _MenuPageState extends State<MenuPage> {
                       });
                     },
                     child: Image.asset(
-                      'assets/calories.png',
+                      'assets/MenuPack/calories.png',
                       width: 50,
                       height: 50,
                     ),
