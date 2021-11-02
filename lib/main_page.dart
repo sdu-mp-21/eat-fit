@@ -128,198 +128,201 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
-      color: color,
-      child: Column(
-        children: [
-          Container(
-            padding: EdgeInsets.fromLTRB(20, 15, 10, 15),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [Colors.blue[800]!, Colors.lightBlueAccent]
+    return SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      child: Container(
+        padding: EdgeInsets.fromLTRB(20, 20, 20, 20),
+        color: color,
+        child: Column(
+          children: [
+            Container(
+              padding: EdgeInsets.fromLTRB(20, 15, 10, 15),
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [Colors.blue[800]!, Colors.lightBlueAccent]
+                ),
+                borderRadius: BorderRadius.all(Radius.circular(18)),
               ),
-              borderRadius: BorderRadius.all(Radius.circular(18)),
-            ),
-            child: Row(
-              children: [
-                Column(
-                  children: [
-                    textWidgetBuilder('$sky', 18, Colors.white),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        textWidgetBuilder('$temperature', 70, Colors.white),
-                        Container(
-                          padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
-                          child: textWidgetBuilder('o', 18, Colors.white),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                SizedBox(width: 13),
-                Container(
-                  color: Colors.grey,
-                  child: SizedBox(width: 1, height: 80,),
-                ),
-                SizedBox(width: 13),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 20,),
-                    textWidgetBuilder('$dayOfTheWeek', 18, Colors.white),
-                    SizedBox(height: 5,),
-                    Row(
-                      children: [
-                        Icon(Icons.location_on_rounded, color: Colors.white,),
-                        textWidgetBuilder('$city', 18, Colors.white),
-                      ],
-                    ),
-                  ],
-                ),
-                Expanded(
-                  child: Align(
-                    alignment: FractionalOffset.centerRight,
-                    child: Image(
-                      image: AssetImage('assets/IconPack/$weatherIcon.png'),
+              child: Row(
+                children: [
+                  Column(
+                    children: [
+                      textWidgetBuilder('$sky', 18, Colors.white),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          textWidgetBuilder('$temperature', 70, Colors.white),
+                          Container(
+                            padding: EdgeInsets.fromLTRB(0, 8, 0, 0),
+                            child: textWidgetBuilder('o', 18, Colors.white),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  SizedBox(width: 13),
+                  Container(
+                    color: Colors.grey,
+                    child: SizedBox(width: 1, height: 80,),
+                  ),
+                  SizedBox(width: 13),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 20,),
+                      textWidgetBuilder('$dayOfTheWeek', 18, Colors.white),
+                      SizedBox(height: 5,),
+                      Row(
+                        children: [
+                          Icon(Icons.location_on_rounded, color: Colors.white,),
+                          textWidgetBuilder('$city', 18, Colors.white),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Expanded(
+                    child: Align(
+                      alignment: FractionalOffset.centerRight,
+                      child: Image(
+                        image: AssetImage('assets/IconPack/$weatherIcon.png'),
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          ),
-          // ElevatedButton(
-          //   onPressed: () {
-          //     _showThemeDialog(context);
-          //   },
-          //   child: Text('theme'),
-          // ),
-          SizedBox(height: 15),
-          Container(
-            padding: EdgeInsets.fromLTRB(45, 10, 45, 10),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(13)),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 3,
-                  blurRadius: 5,
-                ),
-              ],
-            ),
-            child: textWidgetBuilder('Статистика на сегодня:', 22, Colors.black),
-          ),
-          SizedBox(height: 25),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Container(
-                padding: EdgeInsets.fromLTRB(15, 12, 15, 12),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(18)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 5,
-                      blurRadius: 7,
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    textWidgetBuilder('Сожжено:', 18, Colors.black),
-                    SizedBox(height: 7,),
-                    CircularPercentIndicator(
-                      radius: 130,
-                      lineWidth: 10,
-                      backgroundColor: Colors.white,
-                      percent: burnPercentage,
-                      // progressColor: ,
-                      circularStrokeCap: CircularStrokeCap.round,
-                      animation: true,
-                      center: textWidgetBuilder('$ccalBurn \nккал', 22, Colors.black),
-                    ),
-                  ],
-                ),
+                ],
               ),
-              Container(
-                padding: EdgeInsets.fromLTRB(15, 12, 15, 12),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.all(Radius.circular(18)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 5,
-                      blurRadius: 7,
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    textWidgetBuilder('Потреблено:', 18, Colors.black),
-                    SizedBox(height: 7,),
-                    CircularPercentIndicator(
-                      radius: 130,
-                      lineWidth: 10,
-                      backgroundColor: Colors.white,
-                      percent: consPercentage,
-                      progressColor: Colors.green,
-                      circularStrokeCap: CircularStrokeCap.round,
-                      animation: true,
-                      center: textWidgetBuilder('$ccalCons \nккал', 22, Colors.black),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          SizedBox(height: 20,),
-          Container(
-            padding: EdgeInsets.fromLTRB(40, 12, 40, 12),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(18)),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 5,
-                  blurRadius: 7,
-                ),
-              ],
             ),
-            child: Column(
+            // ElevatedButton(
+            //   onPressed: () {
+            //     _showThemeDialog(context);
+            //   },
+            //   child: Text('theme'),
+            // ),
+            SizedBox(height: 15),
+            Container(
+              padding: EdgeInsets.fromLTRB(45, 10, 45, 10),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(13)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 3,
+                    blurRadius: 5,
+                  ),
+                ],
+              ),
+              child: textWidgetBuilder('Статистика на сегодня:', 22, Colors.black),
+            ),
+            SizedBox(height: 25),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                textWidgetBuilder('Сделано шагов:', 18, Colors.black),
-                SizedBox(height: 7,),
-                CircularPercentIndicator(
-                  radius: 130,
-                  lineWidth: 10,
-                  backgroundColor: Colors.white,
-                  percent: 0.421,
-                  progressColor: Colors.blueAccent,
-                  circularStrokeCap: CircularStrokeCap.round,
-                  animation: true,
-                  center: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                Container(
+                  padding: EdgeInsets.fromLTRB(15, 12, 15, 12),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(18)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 5,
+                        blurRadius: 7,
+                      ),
+                    ],
+                  ),
+                  child: Column(
                     children: [
-                      textWidgetBuilder('$steps', 22, Colors.black),
-                      Icon(
-                        Icons.directions_walk,
-                        size: 23,
+                      textWidgetBuilder('Сожжено:', 18, Colors.black),
+                      SizedBox(height: 7,),
+                      CircularPercentIndicator(
+                        radius: 130,
+                        lineWidth: 10,
+                        backgroundColor: Colors.white,
+                        percent: burnPercentage,
+                        // progressColor: ,
+                        circularStrokeCap: CircularStrokeCap.round,
+                        animation: true,
+                        center: textWidgetBuilder('$ccalBurn \nккал', 22, Colors.black),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.fromLTRB(15, 12, 15, 12),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(18)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 5,
+                        blurRadius: 7,
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    children: [
+                      textWidgetBuilder('Потреблено:', 18, Colors.black),
+                      SizedBox(height: 7,),
+                      CircularPercentIndicator(
+                        radius: 130,
+                        lineWidth: 10,
+                        backgroundColor: Colors.white,
+                        percent: consPercentage,
+                        progressColor: Colors.green,
+                        circularStrokeCap: CircularStrokeCap.round,
+                        animation: true,
+                        center: textWidgetBuilder('$ccalCons \nккал', 22, Colors.black),
                       ),
                     ],
                   ),
                 ),
               ],
             ),
-          ),
-        ],
+            SizedBox(height: 20,),
+            Container(
+              padding: EdgeInsets.fromLTRB(40, 12, 40, 12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(18)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                  ),
+                ],
+              ),
+              child: Column(
+                children: [
+                  textWidgetBuilder('Сделано шагов:', 18, Colors.black),
+                  SizedBox(height: 7,),
+                  CircularPercentIndicator(
+                    radius: 130,
+                    lineWidth: 10,
+                    backgroundColor: Colors.white,
+                    percent: 0.421,
+                    progressColor: Colors.blueAccent,
+                    circularStrokeCap: CircularStrokeCap.round,
+                    animation: true,
+                    center: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        textWidgetBuilder('$steps', 22, Colors.black),
+                        Icon(
+                          Icons.directions_walk,
+                          size: 23,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
