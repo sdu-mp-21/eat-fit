@@ -15,7 +15,7 @@ class _RecipesPageState extends State<RecipesPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(height: 5,),
+          SizedBox(height: 15,),
           _buildMenuItem('salat-na-uzhin', 'Легкий пп салат на ужин', 20, Colors.black, 'Яичные белки, Огурец, Творог нежирный, Йогурт греческий, Масло оливковое', '10', 16),
           _buildMenuItem('rybnyie-kotliety', 'Рыбные котлеты из лосося и трески', 20, Colors.black, 'Фарш трески, Фарш лосося, Яйца, Средняя луковица, Мука, Зелень', '50', 16),
           _buildMenuItem('obied', 'Филе с грибами', 20, Colors.black, 'Филе индейки, Шампиньоны, Сливки , Сыр моцарелла, Свежий шпинат, Яичные гнезда', '30', 16),
@@ -42,8 +42,8 @@ class _RecipesPageState extends State<RecipesPage> {
       children: [
         Image.asset(
           'assets/RecipePagePack/$imageName.png',
-          width: 90,
-          height: 90,
+          width: 100,
+          height: 100,
         ),
         SizedBox(width: 15,),
         Column(

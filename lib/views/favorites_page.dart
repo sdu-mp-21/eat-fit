@@ -11,7 +11,6 @@ class _FavoritesPageState extends State<FavoritesPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(0, 5, 0, 0),
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Column(
@@ -35,14 +34,14 @@ class _FavoritesPageState extends State<FavoritesPage> {
       ),
     );
   }
-
+  
   Widget setFavoriteMenuItem(String imageName, String mealName, double nameSize, Color textColor, String time, double timeSize) {
     return Row(
       children: [
         Image.asset(
           'assets/FavoritesPack/$imageName.png',
-          width: 90,
-          height: 90,
+          width: 80,
+          height: 80,
         ),
         SizedBox(width: 15,),
         Column(
@@ -56,7 +55,6 @@ class _FavoritesPageState extends State<FavoritesPage> {
                   Icons.timer_rounded,
                   size: timeSize,
                 ),
-                SizedBox(width: 5,),
                 setText('$time мин', timeSize, textColor),
               ],
             ),
