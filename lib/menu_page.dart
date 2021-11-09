@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_team_project/views/diet_page.dart';
 import 'package:flutter_team_project/views/recipes_pages.dart';
 import 'package:flutter_team_project/views/favorites_page.dart';
 
@@ -19,7 +20,8 @@ class _MenuPageState extends State<MenuPage> {
   List<Widget> pages = [
     RecipesPage(),
     FavoritesPage(),
-    CaloriesPage()
+    DietPage(),
+    CaloriesPage(),
   ];
 
   @override
@@ -74,6 +76,24 @@ class _MenuPageState extends State<MenuPage> {
                     onTap: () {
                       setState(() {
                         currentPageIndex = 2;
+                      });
+                    },
+                    child: Image.asset(
+                      'assets/MenuPack/plan.png',
+                      width: 50,
+                      height: 50,
+                    ),
+                  ),
+                  setText('Рацион', 16, Colors.black),
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        currentPageIndex = 3;
                       });
                     },
                     child: Image.asset(
