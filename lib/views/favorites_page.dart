@@ -16,6 +16,16 @@ class _FavoritesPageState extends State<FavoritesPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Padding(
+              padding: EdgeInsets.fromLTRB(145, 10, 0, 0),
+              child: RaisedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/add_recipe');
+                },
+                child: setText('+', 30, Colors.white),
+                color: Colors.blueAccent,
+              ),
+            ),
             setFavoriteMenuItem('oladushki', 'Творожные оладушки', 20, Colors.black, '10', 16),
             setFavoriteMenuItem('pirog', 'Картофельный пирог с яйцом', 20, Colors.black, '40', 16),
             setFavoriteMenuItem('bulghur', 'Булгур с курочкой', 20, Colors.black, '55', 16),
