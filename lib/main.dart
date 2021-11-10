@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_team_project/views/add_recipe.dart';
 import 'package:flutter_team_project/views/exercise_page.dart';
 import 'views/lockscreen.dart';
 import 'navigation_drawer_widget.dart';
@@ -21,6 +22,7 @@ void main() => runApp(MaterialApp(
     '/edit_profile_page': (context) => const EditProfilePage(),
     '/calories_info_page': (context) => const CaloriesInfo(),
     '/exercise_page': (context) => const ExercisePage(),
+    '/add_recipe': (context) => const AddRecipe(),
   },
   debugShowCheckedModeBanner: false,
 ));

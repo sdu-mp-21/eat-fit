@@ -11,27 +11,30 @@ class _RecipesPageState extends State<RecipesPage> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.fromLTRB(145, 10, 0, 0),
-            child: RaisedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/add_recipe');
-              },
-              child: _buildText('+', 30, Colors.white),
-              color: Colors.blueAccent,
+      scrollDirection: Axis.vertical,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: EdgeInsets.fromLTRB(145, 10, 0, 0),
+              child: RaisedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/add_recipe');
+                },
+                child: _buildText('+', 30, Colors.white),
+                color: Colors.blueAccent,
+              ),
             ),
-          ),
-          _buildMenuItem('salat-na-uzhin', 'Легкий пп салат на ужин', 20, Colors.black, 'Яичные белки, Огурец, Творог нежирный, Йогурт греческий, Масло оливковое', '10', 16),
-          _buildMenuItem('rybnyie-kotliety', 'Рыбные котлеты из лосося и трески', 20, Colors.black, 'Фарш трески, Фарш лосося, Яйца, Средняя луковица, Мука, Зелень', '50', 16),
-          _buildMenuItem('obied', 'Филе с грибами', 20, Colors.black, 'Филе индейки, Шампиньоны, Сливки , Сыр моцарелла, Свежий шпинат, Яичные гнезда', '30', 16),
-          _buildMenuItem('makaroshki-s-kurochkoi', 'Простые макарошки с курочкой и грибами', 20, Colors.black, 'Макароны сухие, Куриное филе, Шампиньоны, Сливочное масло, Сливки, Сыр', '60', 16),
-          _buildMenuItem('blinchiki-s-tvoroghom', 'Блинчики с творогом и джемом', 20, Colors.black, 'Яйцо, Молоко, Творог нежирный, Мука рисовая, Масло растительное, Джем', '20', 16),
-          _buildMenuItem('tort', 'Торт из хлебцев', 20, Colors.black, 'Хлебцы, Молоко, Творог, Банан, Грецкий орех, Какао, Сахарозаменитель', '10', 16),
-        ],
+            _buildMenuItem('salat-na-uzhin', 'Легкий пп салат на ужин', 20, Colors.black, 'Яичные белки, Огурец, Творог нежирный, Йогурт греческий, Масло оливковое', '10', 16),
+            _buildMenuItem('rybnyie-kotliety', 'Рыбные котлеты из лосося и трески', 20, Colors.black, 'Фарш трески, Фарш лосося, Яйца, Средняя луковица, Мука, Зелень', '50', 16),
+            _buildMenuItem('obied', 'Филе с грибами', 20, Colors.black, 'Филе индейки, Шампиньоны, Сливки , Сыр моцарелла, Свежий шпинат, Яичные гнезда', '30', 16),
+            _buildMenuItem('makaroshki-s-kurochkoi', 'Простые макарошки с курочкой и грибами', 20, Colors.black, 'Макароны сухие, Куриное филе, Шампиньоны, Сливочное масло, Сливки, Сыр', '60', 16),
+            _buildMenuItem('blinchiki-s-tvoroghom', 'Блинчики с творогом и джемом', 20, Colors.black, 'Яйцо, Молоко, Творог нежирный, Мука рисовая, Масло растительное, Джем', '20', 16),
+            _buildMenuItem('tort', 'Торт из хлебцев', 20, Colors.black, 'Хлебцы, Молоко, Творог, Банан, Грецкий орех, Какао, Сахарозаменитель', '10', 16),
+          ],
+        ),
       ),
     );
   }

@@ -25,50 +25,65 @@ class _CaloriesPageState extends State<CaloriesPage> {
       child: Column(
         children: [
           SizedBox(height: 15,),
-          Text(
-            'Таблица калорийности',
-            style: TextStyle(
-              fontSize: 24,
-            ),
-          ),
+          _buildText('Таблийца колорийности', 22, Colors.black),
           SizedBox(height: 45,),
-          calorieCategories('meat', 'dairy'),
+          calorieCategories('meat', 'dairy', 'Мясо', 'Молочные'),
           SizedBox(height: 30,),
-          calorieCategories('cereals', 'vegetables'),
+          calorieCategories('cereals', 'vegetables', 'Крупы', 'Овощи'),
           SizedBox(height: 30,),
-          calorieCategories('fruits', 'berries'),
+          calorieCategories('fruits', 'berries', 'Фрукты', 'Ягоды'),
         ],
       ),
     );
   }
 
-  Widget calorieCategories(String category1, String category2) {
+  Widget calorieCategories(String imagePath1, String imagePath2, String category1, String category2) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         GestureDetector(
           onTap: () {
-            navigate(context, category1);
+            navigate(context, imagePath1);
           },
-          child: Image.asset(
-            'assets/calories_page_pack/$category1.png',
-            fit: BoxFit.cover,
-            width: 100,
-            height: 100,
+          child: Column(
+            children: [
+              Image.asset(
+                'assets/calories_page_pack/$imagePath1.png',
+                fit: BoxFit.cover,
+                width: 100,
+                height: 100,
+              ),
+              _buildText(category1, 18, Colors.black),
+            ],
           ),
         ),
         GestureDetector(
           onTap: () {
-            navigate(context, category2);
+            navigate(context, imagePath2);
           },
-          child: Image.asset(
-            'assets/calories_page_pack/$category2.png',
-            fit: BoxFit.cover,
-            width: 100,
-            height: 100,
+          child: Column(
+            children: [
+              Image.asset(
+                'assets/calories_page_pack/$imagePath2.png',
+                fit: BoxFit.cover,
+                width: 100,
+                height: 100,
+              ),
+              _buildText(category2, 18, Colors.black),
+            ],
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildText(String text, double size, Color color) {
+    return Text(
+      '$text',
+      style: TextStyle(
+        fontSize: size,
+        color: color,
+      ),
     );
   }
 }
