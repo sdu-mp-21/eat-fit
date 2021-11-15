@@ -25,13 +25,15 @@ class _CaloriesPageState extends State<CaloriesPage> {
       child: Column(
         children: [
           SizedBox(height: 15,),
-          _buildText('Таблийца колорийности', 22, Colors.black),
-          SizedBox(height: 45,),
+          _buildText('Таблица колорийности', 20, Colors.black),
+          SizedBox(height: 25,),
           calorieCategories('meat', 'dairy', 'Мясо', 'Молочные'),
-          SizedBox(height: 30,),
+          SizedBox(height: 20,),
           calorieCategories('cereals', 'vegetables', 'Крупы', 'Овощи'),
-          SizedBox(height: 30,),
+          SizedBox(height: 20,),
           calorieCategories('fruits', 'berries', 'Фрукты', 'Ягоды'),
+          SizedBox(height: 20,),
+          calorieCategories('oil', 'nuts', 'Масла', 'Орехи'),
         ],
       ),
     );
@@ -50,8 +52,8 @@ class _CaloriesPageState extends State<CaloriesPage> {
               Image.asset(
                 'assets/calories_page_pack/$imagePath1.png',
                 fit: BoxFit.cover,
-                width: 100,
-                height: 100,
+                width: 80,
+                height: 80,
               ),
               _buildText(category1, 18, Colors.black),
             ],
@@ -66,8 +68,8 @@ class _CaloriesPageState extends State<CaloriesPage> {
               Image.asset(
                 'assets/calories_page_pack/$imagePath2.png',
                 fit: BoxFit.cover,
-                width: 100,
-                height: 100,
+                width: 80,
+                height: 80,
               ),
               _buildText(category2, 18, Colors.black),
             ],
