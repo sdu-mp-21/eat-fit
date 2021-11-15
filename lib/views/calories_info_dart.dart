@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_team_project/models/product.dart';
 
 
 class CaloriesInfo extends StatefulWidget {
@@ -22,72 +23,54 @@ class _CaloriesInfoState extends State<CaloriesInfo> {
   Map<String, String> vegetableCalories = {'Морковь':'35/1/0/7', 'Картофель':'76/2/0/16', 'Помидор':'20/1/0/5', 'Огурец':'15/1/0/3'};
   Map<String, String> berrieCalories = {'Банан':'95/2/22', 'Вишня':'52/1/0/12', 'Клубника':'41/1/0/8', 'Голубика':'35/1/0/8'};
 
-  Map getMap() {
-    switch(text) {
-      case 'dairy': {
-        return dairyCalories;
-      }
-      break;
-      case 'meat': {
-        return meatCalories;
-      }
-      break;
-      case 'fruits': {
-        return fruitCalories;
-      }
-      break;
-      case 'vegetables': {
-        return vegetableCalories;
-      }
-      break;
-      case 'cereals': {
-        return cerealsCalories;
-      }
-      break;
-      case 'berries': {
-        return berrieCalories;
-      }
-      break;
-      default: {
-        return dairyCalories;
-      }
-      break;
-    }
-  }
-
-  Widget setText(String text) {
+  Widget setText(String text, double size) {
     return Text(
       '$text',
       style: TextStyle(
-        fontSize: 20,
+        fontSize: size,
       ),
     );
   }
 
-  Widget setName(BuildContext context) {
-    for (var i = 0; i < getMap().length; i++) {
-      return setText(getMap().keys.elementAt(i));
-    }
-    return setText('DefaultName');
-    // return ListView.builder(
-    //   itemCount: getMap().length,
-    //   itemBuilder: (context, i) {
-    //     return setText(getMap().keys.elementAt(i));
-    //   }
-    // );
-  }
+  final dairyProducts = <Product> [
+    Product(name: 'Молоко', nutrition: '64/3/4/5'),
+    Product(name: 'Яйца', nutrition: '157/13/11/1'),
+    Product(name: 'Сыр', nutrition: '363/24/30/0'),
+    // продукы добавлять сюда
+  ];
 
-  Widget setCcal(BuildContext context) {
-    for (var i = 0; i < getMap().length; i++) {
-      return setText(getMap().values.elementAt(i));
+  final meatProducts = <Product> [
+    Product(name: 'Говядина', nutrition: '187/19/12/0'),
+    Product(name: 'Курятина', nutrition: '157/13/11/1'),
+    Product(name: 'Индейка', nutrition: '84/19/1/0'),
+    // и сюда тоже
+  ];
+
+  List<Product> getList() {
+    switch(text) {
+      case 'dairy': {
+        return dairyProducts;
+      }
+      case 'meat': {
+        return meatProducts;
+      }
+    /// Здесь на return просто перепиши на название списка
+    // case 'fruits': {
+    //   return fruitCalories;
+    // }
+    // case 'vegetables': {
+    //   return vegetableCalories;
+    // }
+    // case 'cereals': {
+    //   return cerealsCalories;
+    // }
+    // case 'berries': {
+    //   return berrieCalories;
+    // }
+      default: {
+        return dairyProducts;
+      }
     }
-    return setText('DefaultVal');
-    // return ListView.builder(
-    //     itemCount: getMap().length,
-    //     itemBuilder: (context, i) {
-    //       return setText(getMap().values.elementAt(i));
-    //     }
-    // );
   }
 
   @override
@@ -96,34 +79,25 @@ class _CaloriesInfoState extends State<CaloriesInfo> {
       appBar: AppBar(
         title: Text('Калорийность продуктов'),
       ),
-      body: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Название',
-                style: TextStyle(
-                  fontSize: 22,
-                ),
-              ),
-              Text(
-                'К/Б/Ж/У',
-                style: TextStyle(
-                  fontSize: 22,
-                ),
-              ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              setName(context),
-              setCcal(context),
-            ],
-          ),
-        ],
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: DataTable(
+          columnSpacing: 140,
+          columns: [
+            DataColumn(label: setText('Название', 22)),
+            DataColumn(label: setText('К/Б/Ж/У', 22)),
+          ],
+          rows: getRows(getList()),
+        ),
       ),
     );
   }
+
+  List<DataRow> getRows(List<Product> products) => products.map((Product product) {
+    final cells = [product.name, product.nutrition];
+    return DataRow(cells: getCells(cells));
+  }).toList();
+
+  List<DataCell> getCells(List<dynamic> cells) =>
+      cells.map((data) => DataCell(setText('$data', 18))).toList();
 }
