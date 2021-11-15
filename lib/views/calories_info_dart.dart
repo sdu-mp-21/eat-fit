@@ -45,6 +45,38 @@ class _CaloriesInfoState extends State<CaloriesInfo> {
     Product(name: 'Индейка', nutrition: '84/19/1/0'),
     // и сюда тоже
   ];
+  
+  final oilProducts = <Product> [
+    Product(name: 'Арахисовое', nutrition: '899/0/99,9/0'),
+    Product(name: 'Горчичное', nutrition: '898/0/99,8/0'),
+    Product(name: 'Масло какао', nutrition: '899/0/99,9/0'),
+    Product(name: 'Масло канолы', nutrition: '899/0/99,9/0'),
+    Product(name: 'Какосовое', nutrition: '899/0/99,9/0'),
+    Product(name: 'Конопляное', nutrition: '899/0/99,9/0'),
+    Product(name: 'Кукурузное', nutrition: '899/0/99,9/0'),
+    Product(name: 'Кунжутное', nutrition: '899/0/99,9/0'),
+    Product(name: 'Льняное', nutrition: '898/0/99,8/0'),
+    Product(name: 'Оливковое', nutrition: '898/0/99,8/0'),
+    Product(name: 'Подсолнечное', nutrition: '899/0/99,9/0'),
+    Product(name: 'Рапсовое', nutrition: '899/0/99,9/0'),
+    Product(name: 'Соевое', nutrition: '899/0/99,9/0'),
+    Product(name: 'Сливочное масло', nutrition: '899/0/99,9/0'),
+    Product(name: 'Маргарин сливочный', nutrition: '743/0,3/82/1'),
+  ];
+
+  final nutProducts = <Product> [
+    Product(name: 'Арахис', nutrition: '552/26.3/45.2/9.9'),
+    Product(name: 'Бразильский орех', nutrition: '656/14.3/66.4/12.3'),
+    Product(name: 'Грецкий орех', nutrition: '656/16,2/60,8/11,1'),
+    Product(name: 'Желуди сушёные', nutrition: '509/8,1/31,4/53,6'),
+    Product(name: 'Кедровый орех', nutrition: ' 875/13,7/68,4/13,1'),
+    Product(name: 'Кешью', nutrition: '600/18,5/48,5/22,5'),
+    Product(name: 'Кунжут', nutrition: '565/19,4/48,7/12,2'),
+    Product(name: 'Миндаль', nutrition: '609/18,6/53,7/13'),
+    Product(name: 'Семена подсолнечника', nutrition: '601/20,7/52,9/10,5'),
+    Product(name: 'Фисташки', nutrition: '560/20,2/45,3/27,2'),
+    Product(name: 'Фундук', nutrition: '653/13/62,6/9,3'),
+  ];
 
   List<Product> getList() {
     switch(text) {
@@ -67,6 +99,12 @@ class _CaloriesInfoState extends State<CaloriesInfo> {
     // case 'berries': {
     //   return berrieCalories;
     // }
+      case 'oil': {
+        return oilProducts;
+      }
+      case 'nuts': {
+        return nutProducts;
+      }
       default: {
         return dairyProducts;
       }
