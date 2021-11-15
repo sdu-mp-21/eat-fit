@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_team_project/views/about_page.dart';
 import 'package:flutter_team_project/views/add_recipe.dart';
 import 'package:flutter_team_project/views/exercise_page.dart';
 import 'views/lockscreen.dart';
@@ -23,6 +24,7 @@ void main() => runApp(MaterialApp(
     '/calories_info_page': (context) => const CaloriesInfo(),
     '/exercise_page': (context) => const ExercisePage(),
     '/add_recipe': (context) => const AddRecipe(),
+    '/about_page': (context) => const AboutPage(),
   },
   debugShowCheckedModeBanner: false,
 ));
