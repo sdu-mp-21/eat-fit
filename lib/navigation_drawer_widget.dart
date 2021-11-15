@@ -127,21 +127,26 @@ class _SideNavigationBarState extends State<SideNavigationBar> {
               ],
             ),
             SizedBox(height: 15),
-            Row(
-              children: [
-                Icon(
-                  Icons.info_outline,
-                  color: Colors.amber,
-                  size: 35,
-                ),
-                SizedBox(width: 15),
-                Text(
-                  'О приложении',
-                  style: TextStyle(
-                    fontSize: 20,
+            GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, '/about_page');
+              },
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.info_outline,
+                    color: Colors.amber,
+                    size: 35,
                   ),
-                ),
-              ],
+                  SizedBox(width: 15),
+                  Text(
+                    'О приложении',
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
