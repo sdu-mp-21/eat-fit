@@ -16,13 +16,6 @@ class _CaloriesInfoState extends State<CaloriesInfo> {
   String? text;
   _CaloriesInfoState(this.text);
 
-  Map<String, String> dairyCalories = {'Молоко':'64/3/4/5', 'Яйца':'157/13/11/1', 'Сыр':'363/24/30/0'};
-  Map<String, String> meatCalories = {'Говядина':'187/19/12/0', 'Курятина':'190/16/14/0', 'Индейка':'84/19/1/0', 'Баранина':'209/16/16/0'};
-  Map<String, String> fruitCalories = {'Груша':'42/0/0/11', 'Яблоко':'47/0/0/10', 'Апельсин':'84/19/1/0'};
-  Map<String, String> cerealsCalories = {'Горох':'60/6/0/9', 'Овсянка':'342/12/6/60', 'Гречка':'354/10/9/60', 'Рис':'344/7/1/79', 'Перловка':'320/9/1/78'};
-  Map<String, String> vegetableCalories = {'Морковь':'35/1/0/7', 'Картофель':'76/2/0/16', 'Помидор':'20/1/0/5', 'Огурец':'15/1/0/3'};
-  Map<String, String> berrieCalories = {'Банан':'95/2/22', 'Вишня':'52/1/0/12', 'Клубника':'41/1/0/8', 'Голубика':'35/1/0/8'};
-
   Widget setText(String text, double size) {
     return Text(
       '$text',
@@ -33,19 +26,117 @@ class _CaloriesInfoState extends State<CaloriesInfo> {
   }
 
   final dairyProducts = <Product> [
-    Product(name: 'Молоко', nutrition: '64/3/4/5'),
-    Product(name: 'Яйца', nutrition: '157/13/11/1'),
+    Product(name: 'Молоко 0,5%', nutrition: '35/3/0,5/5'),
+    Product(name: 'Молоко 1,5%', nutrition: '44/3/1,5/5'),
+    Product(name: 'Молоко 2,5%', nutrition: '52/3/2,5/5'),
+    Product(name: 'Молоко 3,2%', nutrition: '58/3/3,2/5'),
+    Product(name: 'Молоко 3,5%', nutrition: '61/3/3,5/5'),
+    Product(name: 'Молоко сгущеное', nutrition: '320/7,2/8,5/56'),
+    Product(name: 'Яйца Куриные', nutrition: '157/13/11/1'),
+    Product(name: 'Яйца Перепелиные', nutrition: '168/12/13/1'),
     Product(name: 'Сыр', nutrition: '363/24/30/0'),
-    // продукы добавлять сюда
+    Product(name: 'Творог 0%', nutrition: '79/18/0/1,8'),
+    Product(name: 'Творог 5%', nutrition: '105/12,7/5/2,4'),
+    Product(name: 'Творог 9%', nutrition: '159/16,7/9/2'),
+    Product(name: 'Творог 18%', nutrition: '232/14/18/2,5'),
+    Product(name: 'Кефир 0%', nutrition: '30/3/0/3,8'),
+    Product(name: 'Кефир 1%', nutrition: '40/3/1/4'),
+    Product(name: 'Кефир 2,5%', nutrition: '53/3/2,5/4'),
+    Product(name: 'Кефир 3,2%', nutrition: '59/3/3,2/4'),
+    Product(name: 'Сметана 10%', nutrition: '115/3/10/2,9'),
+    Product(name: 'Сметана 15%', nutrition: '160/2,6/15/3,6'),
+    Product(name: 'Сметана 20%', nutrition: '204/2,8/20/3,2'),
+    Product(name: 'Сметана 25%', nutrition: '248/2,6/25/2,7'),
+    Product(name: 'Сметана 10%', nutrition: '294/2,4/30/3,1'),
   ];
 
   final meatProducts = <Product> [
     Product(name: 'Говядина', nutrition: '187/19/12/0'),
+    Product(name: 'Говядина грудинка', nutrition: '217/19/16/0'),
+    Product(name: 'Говядина филейная вырезка', nutrition: '113/20/3,5/0'),
     Product(name: 'Курятина', nutrition: '157/13/11/1'),
+    Product(name: 'Куриная грудка', nutrition: '113/23/2/0'),
+    Product(name: 'Куриное филе', nutrition: '113/23/2/0'),
     Product(name: 'Индейка', nutrition: '84/19/1/0'),
-    // и сюда тоже
+    Product(name: 'Конина', nutrition: '143/20/7/0'),
+    Product(name: 'Баранина', nutrition: '203/16,3/15,3/0'),
+    Product(name: 'Баранина окорок', nutrition: '232/18/18/0'),
+    // Говядина, грудинка	100 г	217	19,3	15,7	0,0
   ];
-  
+
+  final fruitProducts = <Product> [
+    Product(name: 'Абрикос', nutrition: '46/0,9/0/10,5'),
+    Product(name: 'Авокадо', nutrition: '223/1,9/23,5/6,7'),
+    Product(name: 'Ананас', nutrition: '48/0,4/0/11,8'),
+    Product(name: 'Апельсин', nutrition: '38/0,9/0/8,4'),
+    Product(name: 'Арбуз', nutrition: '38/0,9/0/8'),
+    Product(name: 'Бананы', nutrition: '91/1,5/0/22,4'),
+    Product(name: 'Гранат', nutrition: '52/0,9/0/11,8'),
+    Product(name: 'Грейпфрут', nutrition: '35/0,9/0/7,3'),
+    Product(name: 'Груша', nutrition: '42/0,4/0/10,7'),
+    Product(name: 'Инжир', nutrition: '56/0,7/0/13,9'),
+    Product(name: 'Киви', nutrition: '61/1/0/11'),
+    Product(name: 'Лимон', nutrition: '31/0,9/0/3,6'),
+    Product(name: 'Мандарин', nutrition: '38/0,8/0/8,6'),
+    Product(name: 'Персики', nutrition: '44/0,9/0/10,4'),
+    Product(name: 'Яблоки', nutrition: '46/0,4/0/11,3'),
+  ];
+
+  final berrieProducts = <Product> [
+    Product(name: 'Виноград', nutrition: '69/0,4/0/17,5'),
+    Product(name: 'Вишня', nutrition: '49/0,8/0/11,3'),
+    Product(name: 'Голубика', nutrition: '37/1/0/7,7'),
+    Product(name: 'Ежевика', nutrition: '33/2/0/5,3'),
+    Product(name: 'Земляника', nutrition: '41/1,8/0/8,1'),
+    Product(name: 'Клюква', nutrition: '28/0,5/0/4,8'),
+    Product(name: 'Крыжовник', nutrition: '44/0,7/0/9,9'),
+    Product(name: 'Малина', nutrition: '41/0,8/0/9'),
+    Product(name: 'Смородина черная', nutrition: '40/1/0/8'),
+    Product(name: 'Финики', nutrition: '281/2,5/0/72,1'),
+    Product(name: 'Хурма', nutrition: '62/0,5/0/15,9'),
+    Product(name: 'Черешня', nutrition: '52/1,1/0/12,3'),
+    Product(name: 'Черника', nutrition: '40/1,1/0/8,6'),
+    Product(name: 'Шиповник', nutrition: '101/1,6/0/24'),
+  ];
+
+  final vegetableProducts = <Product> [
+    Product(name: 'Баклажаны', nutrition: '24/0,6/0/5,5'),
+    Product(name: 'Брюква', nutrition: '37/1,2/0/8,1'),
+    Product(name: 'Горошек зеленый', nutrition: '72/5/0/13,3'),
+    Product(name: 'Кабачки', nutrition: '27/0,6/0,3/5,7'),
+    Product(name: 'Капуста', nutrition: '29/2,5/0/4,9'),
+    Product(name: 'Картофель', nutrition: '83/2/0/19,7'),
+    Product(name: 'Лук зеленый', nutrition: '22/1,3/0/4,3'),
+    Product(name: 'Лук репчатый', nutrition: '43/1,7/0/9,5'),
+    Product(name: 'Морковь', nutrition: '33/1,3/0/7'),
+    Product(name: 'Огурцы', nutrition: '15/0,8/0/3'),
+    Product(name: 'Перец зеленый', nutrition: '23/1,3/0/4,7'),
+    Product(name: 'Перец красный', nutrition: '27/1,3/0/5,7'),
+    Product(name: 'Петрушка', nutrition: '45/3,7/0/8,1'),
+    Product(name: 'Ревень', nutrition: '16/0,7/0/2,9'),
+    Product(name: 'Редис', nutrition: '20/1,2/0/4,1'),
+    Product(name: 'Редька', nutrition: '34/1,9/0/7'),
+    Product(name: 'Салат', nutrition: '14/1,5/0/2,2'),
+    Product(name: 'Свекла', nutrition: '48/1,7/0/10,8'),
+    Product(name: 'Томаты', nutrition: '19/0,6/0/4,2'),
+    Product(name: 'Зелёная фасоль', nutrition: '32/4/0/4,3'),
+    Product(name: 'Чеснок', nutrition: '106/6,5/0/21,2'),
+    Product(name: 'Шпинат', nutrition: '21/2,9/0/2,3'),
+    Product(name: 'Щавель', nutrition: '28/1,5/0/5,3'),
+  ];
+
+  final cerealProducts = <Product> [
+    Product(name: 'Гречневая крупа', nutrition: '329/12/4/63'),
+    Product(name: 'Кукурузная крупа', nutrition: '328/8,3/1,2/71'),
+    Product(name: 'Манная крупа', nutrition: '333/10,3//70,6'),
+    Product(name: 'Овсяная крупа', nutrition: '342/12,3/6,1/59,5'),
+    Product(name: 'Перловая крупа', nutrition: '315/9,3/1,1/66,9'),
+    Product(name: 'Пшеничная крупа', nutrition: '329/11/1,2/68,5'),
+    Product(name: 'Пшенная крупа', nutrition: '342/11,5/3,3/66,5'),
+    Product(name: 'Рисовая крупа', nutrition: '333/7/1/74'),
+    Product(name: 'Ячневая крупа', nutrition: '313/10/1,3/65,4'),
+  ];
+
   final oilProducts = <Product> [
     Product(name: 'Арахисовое', nutrition: '899/0/99,9/0'),
     Product(name: 'Горчичное', nutrition: '898/0/99,8/0'),
@@ -86,19 +177,18 @@ class _CaloriesInfoState extends State<CaloriesInfo> {
       case 'meat': {
         return meatProducts;
       }
-    /// Здесь на return просто перепиши на название списка
-    // case 'fruits': {
-    //   return fruitCalories;
-    // }
-    // case 'vegetables': {
-    //   return vegetableCalories;
-    // }
-    // case 'cereals': {
-    //   return cerealsCalories;
-    // }
-    // case 'berries': {
-    //   return berrieCalories;
-    // }
+      case 'fruits': {
+        return fruitProducts;
+      }
+      case 'vegetables': {
+        return vegetableProducts;
+      }
+      case 'cereals': {
+        return cerealProducts;
+      }
+      case 'berries': {
+        return berrieProducts;
+      }
       case 'oil': {
         return oilProducts;
       }
