@@ -16,15 +16,6 @@ class _CaloriesInfoState extends State<CaloriesInfo> {
   String? text;
   _CaloriesInfoState(this.text);
 
-  Widget setText(String text, double size) {
-    return Text(
-      '$text',
-      style: TextStyle(
-        fontSize: size,
-      ),
-    );
-  }
-
   final dairyProducts = <Product> [
     Product(name: 'Молоко 0,5%', nutrition: '35/3/0,5/5'),
     Product(name: 'Молоко 1,5%', nutrition: '44/3/1,5/5'),
@@ -53,7 +44,7 @@ class _CaloriesInfoState extends State<CaloriesInfo> {
   final meatProducts = <Product> [
     Product(name: 'Говядина', nutrition: '187/19/12/0'),
     Product(name: 'Говядина грудинка', nutrition: '217/19/16/0'),
-    Product(name: 'Говядина филейная вырезка', nutrition: '113/20/3,5/0'),
+    Product(name: 'Говядина филе', nutrition: '113/20/3,5/0'),
     Product(name: 'Курятина', nutrition: '157/13/11/1'),
     Product(name: 'Куриная грудка', nutrition: '113/23/2/0'),
     Product(name: 'Куриное филе', nutrition: '113/23/2/0'),
@@ -61,7 +52,6 @@ class _CaloriesInfoState extends State<CaloriesInfo> {
     Product(name: 'Конина', nutrition: '143/20/7/0'),
     Product(name: 'Баранина', nutrition: '203/16,3/15,3/0'),
     Product(name: 'Баранина окорок', nutrition: '232/18/18/0'),
-    // Говядина, грудинка	100 г	217	19,3	15,7	0,0
   ];
 
   final fruitProducts = <Product> [
@@ -164,7 +154,7 @@ class _CaloriesInfoState extends State<CaloriesInfo> {
     Product(name: 'Кешью', nutrition: '600/18,5/48,5/22,5'),
     Product(name: 'Кунжут', nutrition: '565/19,4/48,7/12,2'),
     Product(name: 'Миндаль', nutrition: '609/18,6/53,7/13'),
-    Product(name: 'Семена подсолнечника', nutrition: '601/20,7/52,9/10,5'),
+    Product(name: 'Семечки', nutrition: '601/20,7/52,9/10,5'),
     Product(name: 'Фисташки', nutrition: '560/20,2/45,3/27,2'),
     Product(name: 'Фундук', nutrition: '653/13/62,6/9,3'),
   ];
@@ -209,13 +199,16 @@ class _CaloriesInfoState extends State<CaloriesInfo> {
       ),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
-        child: DataTable(
-          columnSpacing: 140,
-          columns: [
-            DataColumn(label: setText('Название', 22)),
-            DataColumn(label: setText('К/Б/Ж/У', 22)),
-          ],
-          rows: getRows(getList()),
+        child: FittedBox(
+          child: DataTable(
+            horizontalMargin: 15,
+            columnSpacing: 130,
+            columns: [
+              DataColumn(label: setText('Название', 20)),
+              DataColumn(label: setText('К/Б/Ж/У', 20)),
+            ],
+            rows: getRows(getList()),
+          ),
         ),
       ),
     );
@@ -227,5 +220,14 @@ class _CaloriesInfoState extends State<CaloriesInfo> {
   }).toList();
 
   List<DataCell> getCells(List<dynamic> cells) =>
-      cells.map((data) => DataCell(setText('$data', 18))).toList();
+      cells.map((data) => DataCell(setText('$data', 16))).toList();
+
+  Widget setText(String text, double size) {
+    return Text(
+      text,
+      style: TextStyle(
+        fontSize: size,
+      ),
+    );
+  }
 }

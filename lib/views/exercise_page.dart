@@ -17,7 +17,6 @@ class _ExercisePageState extends State<ExercisePage> {
       ),
       body: Column(
         children: [
-
         ],
       ),
     );
@@ -25,7 +24,7 @@ class _ExercisePageState extends State<ExercisePage> {
 
   Widget _buildText(String text, double size, Color color) {
     return Text(
-      '$text',
+      text,
       style: TextStyle(
         fontSize: size,
         color: color,

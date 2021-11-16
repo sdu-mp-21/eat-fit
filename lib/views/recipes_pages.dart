@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_team_project/db/recipes_database.dart';
+import 'package:flutter_team_project/models/recipes.dart';
 
 class RecipesPage extends StatefulWidget {
   const RecipesPage({Key? key}) : super(key: key);
@@ -8,76 +10,105 @@ class RecipesPage extends StatefulWidget {
 }
 
 class _RecipesPageState extends State<RecipesPage> {
+  late List<Recipes> recipes;
+  bool isLoading = false;
+
+  Future refreshRecipes() async {
+    setState(() => isLoading = true);
+    recipes = await RecipesDatabase.instance.readAllRecipes();
+    setState(() => isLoading = false);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    refreshRecipes();
+  }
+
+  List<Color> containerColors = [Colors.amberAccent, Colors.teal];
+  String goal = '';
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.vertical,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: EdgeInsets.fromLTRB(145, 10, 0, 0),
-              child: RaisedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/add_recipe');
-                },
-                child: _buildText('+', 30, Colors.white),
-                color: Colors.blueAccent,
-              ),
-            ),
-            _buildMenuItem('salat-na-uzhin', 'Легкий пп салат на ужин', 20, Colors.black, 'Яичные белки, Огурец, Творог нежирный, Йогурт греческий, Масло оливковое', '10', 16),
-            _buildMenuItem('rybnyie-kotliety', 'Рыбные котлеты из лосося и трески', 20, Colors.black, 'Фарш трески, Фарш лосося, Яйца, Средняя луковица, Мука, Зелень', '50', 16),
-            _buildMenuItem('obied', 'Филе с грибами', 20, Colors.black, 'Филе индейки, Шампиньоны, Сливки , Сыр моцарелла, Свежий шпинат, Яичные гнезда', '30', 16),
-            _buildMenuItem('makaroshki-s-kurochkoi', 'Простые макарошки с курочкой и грибами', 20, Colors.black, 'Макароны сухие, Куриное филе, Шампиньоны, Сливочное масло, Сливки, Сыр', '60', 16),
-            _buildMenuItem('blinchiki-s-tvoroghom', 'Блинчики с творогом и джемом', 20, Colors.black, 'Яйцо, Молоко, Творог нежирный, Мука рисовая, Масло растительное, Джем', '20', 16),
-            _buildMenuItem('tort', 'Торт из хлебцев', 20, Colors.black, 'Хлебцы, Молоко, Творог, Банан, Грецкий орех, Какао, Сахарозаменитель', '10', 16),
-          ],
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Center(
+          child: RaisedButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/add_recipe').then((value) => {setState(() {refreshRecipes();})});
+            },
+            child: _buildText('+', 30, Colors.white),
+            color: Colors.blueAccent,
+          ),
         ),
-      ),
+        SizedBox(height: 2,),
+        Center(
+          child: Container(
+            child: isLoading ?
+            CircularProgressIndicator() : recipes.isEmpty ?
+            _buildText('Рецепты не добавлены', 18, Colors.black) : buildRecipes(),
+          ),
+        ),
+        SizedBox(height: 15),
+      ],
+    );
+  }
+
+  Widget buildRecipes() {
+    return ListView.separated(
+      physics: NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      itemCount: recipes.length,
+      separatorBuilder: (BuildContext context, int index) {
+        return SizedBox(height: 10);
+      },
+      itemBuilder: (context, index) {
+        final recipe = recipes[index];
+        return Container(
+          padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.all(Radius.circular(20)),
+            // color: containerColors[recipe.id! % 2],
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 3,
+                blurRadius: 5,
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildText('${recipe.name}', 19, Colors.black),
+              SizedBox(height: 6,),
+              _buildText('${recipe.ingredients}', 16, Colors.black),
+              SizedBox(height: 2,),
+              Row(
+                children: [
+                  Icon(
+                    Icons.timer_rounded,
+                    size: 20,
+                  ),
+                  SizedBox(width: 3),
+                  _buildText('${recipe.time}', 16, Colors.black),
+                ],
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 
   Widget _buildText(String text, double size, Color textColor) {
     return Text(
-      '$text',
+      text,
       style: TextStyle(
         fontSize: size,
         color: textColor,
       ),
-    );
-  }
-
-  Widget _buildMenuItem(String imageName, String mealName, double nameSize, Color textColor, String ingredients, String time, double timeSize) {
-    return Row(
-      children: [
-        Image.asset(
-          'assets/RecipePagePack/$imageName.png',
-          width: 100,
-          height: 100,
-        ),
-        SizedBox(width: 15,),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _buildText(mealName, nameSize, Colors.black),
-            SizedBox(height: 7,),
-            _buildText(ingredients, 14, Colors.grey),
-            SizedBox(height: 5),
-            Row(
-              children: [
-                Icon(
-                  Icons.timer_rounded,
-                  size: timeSize,
-                ),
-                SizedBox(width: 5),
-                _buildText('$time мин', timeSize, Colors.black),
-              ],
-            ),
-          ],
-        ),
-      ],
     );
   }
 }

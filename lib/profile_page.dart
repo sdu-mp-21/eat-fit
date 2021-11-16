@@ -15,7 +15,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
 
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
 
   String name = "";
   String goal = "";
@@ -39,7 +39,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future writeFile() async {
-    Person person = new Person('Равиль Аман', 'Набрать мышечную массу', '19', '19.57', '178', '62');
+    Person person = Person('Равиль Аман', 'Набрать мышечную массу', '19', '19.57', '178', '62');
     try {
       await myFile!.writeAsString(convertToJson(person));
     } catch (e) {
@@ -90,7 +90,7 @@ class _ProfilePageState extends State<ProfilePage> {
           IconButton(
             padding: EdgeInsets.only(right: 15),
             onPressed: () {
-              Navigator.pushNamed(context, '/edit_profile_page');
+              Navigator.pushNamed(context, '/edit_profile_page').then((value) => {refreshData()});
             },
             icon: Icon(
               Icons.edit_outlined,
@@ -116,13 +116,13 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
               SizedBox(height: 15),
-              _buildText('$name', 28),
+              _buildText(name, 28),
               SizedBox(height: 35),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  _buildProperties("Возраст", "$age"),
-                  _buildProperties("ИМТ", "$bmi"),
+                  _buildProperties("Возраст", age),
+                  _buildProperties("ИМТ", bmi),
                   _buildProperties("Рост", "$height см"),
                   _buildProperties("Вес", "$weight кг"),
                 ],
@@ -130,9 +130,7 @@ class _ProfilePageState extends State<ProfilePage> {
               SizedBox(height: 30),
               _buildText('Цель:', 16),
               SizedBox(height: 5),
-              /// Куда худеть то, и так прекрасно выглядишь
-              // _buildText('Похудеть', 20),
-              _buildText('$goal', 20),
+              _buildText(goal, 20),
             ],
           ),
         ),
@@ -152,7 +150,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget _buildText(String text, double size) {
     return Text(
-      '$text',
+      text,
       style: TextStyle(
         fontSize: size,
       ),

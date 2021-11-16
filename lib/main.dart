@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_team_project/views/about_page.dart';
 import 'package:flutter_team_project/views/add_recipe.dart';
 import 'package:flutter_team_project/views/exercise_page.dart';
+import 'db/recipes_database.dart';
 import 'views/lockscreen.dart';
 import 'navigation_drawer_widget.dart';
 import 'training_page.dart';
@@ -47,6 +48,12 @@ class _HomeState extends State<Home> {
   ];
 
   @override
+  void dispose() {
+    RecipesDatabase.instance.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: SideNavigationBar(),
@@ -55,7 +62,8 @@ class _HomeState extends State<Home> {
         backgroundColor: Color.fromRGBO(39, 16, 51, 1),
         centerTitle: true,
       ),
-      body: Center(
+      body: Align(
+        alignment: Alignment.topCenter,
         child: pages.elementAt(_currentIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -64,7 +72,7 @@ class _HomeState extends State<Home> {
         type: BottomNavigationBarType.fixed,
         selectedItemColor: Colors.pink,
         unselectedItemColor: Colors.grey,
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(
               Icons.sports,

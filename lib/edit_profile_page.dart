@@ -64,7 +64,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
 
   Person refreshData() {
-    Person person = new Person(name, goal, age, bmi, height, weight);
+    Person person = Person(name, goal, age, bmi, height, weight);
     return person;
   }
 
@@ -234,7 +234,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     if (_formKey.currentState!.validate()) {
                       writeFile(refreshData());
                       showToast('Изменения сохранены успешно!').then((_) {
-                        Navigator.pop(context);
+                        Navigator.pop(context, true);
                       });
                     } else {
                       showToast('Пожалуйста, введите значения!');
@@ -252,7 +252,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   Widget _buildText(String text, double size) {
     return Text(
-      '$text',
+      text,
       style: TextStyle(
         fontSize: size,
       ),
