@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_team_project/db/recipes_database.dart';
 import 'package:flutter_team_project/models/recipes.dart';
+import 'package:flutter_team_project/views/recipe_detail_page.dart';
 
 class RecipesPage extends StatefulWidget {
   const RecipesPage({Key? key}) : super(key: key);
@@ -64,38 +65,46 @@ class _RecipesPageState extends State<RecipesPage> {
       },
       itemBuilder: (context, index) {
         final recipe = recipes[index];
-        return Container(
-          padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(20)),
-            // color: containerColors[recipe.id! % 2],
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 3,
-                blurRadius: 5,
-              ),
-            ],
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildText('${recipe.name}', 19, Colors.black),
-              SizedBox(height: 6,),
-              _buildText('${recipe.ingredients}', 16, Colors.black),
-              SizedBox(height: 2,),
-              Row(
-                children: [
-                  Icon(
-                    Icons.timer_rounded,
-                    size: 20,
-                  ),
-                  SizedBox(width: 3),
-                  _buildText('${recipe.time}', 16, Colors.black),
-                ],
-              ),
-            ],
+        return GestureDetector(
+          onTap: () {
+            Navigator.push(context,
+            MaterialPageRoute(
+              builder: (context) => RecipeDetail(recipeId: recipe.id!)
+            )).then((value) => refreshRecipes());
+          },
+          child: Container(
+            padding: EdgeInsets.fromLTRB(15, 10, 15, 10),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(20)),
+              // color: containerColors[recipe.id! % 2],
+              color: Colors.white,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 3,
+                  blurRadius: 5,
+                ),
+              ],
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildText('${recipe.name}', 19, Colors.black),
+                SizedBox(height: 6,),
+                _buildText('${recipe.ingredients}', 16, Colors.black),
+                SizedBox(height: 2,),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.timer_rounded,
+                      size: 20,
+                    ),
+                    SizedBox(width: 3),
+                    _buildText('${recipe.time}', 16, Colors.black),
+                  ],
+                ),
+              ],
+            ),
           ),
         );
       },
