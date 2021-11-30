@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_team_project/views/exercise_page.dart';
 
 
 class TrainingPage extends StatefulWidget {
@@ -16,9 +16,9 @@ class _TrainingPageState extends State<TrainingPage> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        trainingPageItemsBuilder('assets/exercise_pack/run', 'Бег', 'assets/exercise_pack/cycling', 'Езда'),
-        trainingPageItemsBuilder('assets/exercise_pack/push_up', 'Отжимание', 'assets/exercise_pack/sit_up', 'Скручивания'),
-        trainingPageItemsBuilder('assets/exercise_pack/squat', 'Приседание', 'assets/exercise_pack/walk', 'Ходьба'),
+        trainingPageItemsBuilder('assets/exercise_pack/abs', 'Пресс', 'assets/exercise_pack/body', 'Грудь'),
+        trainingPageItemsBuilder('assets/exercise_pack/leg', 'Ноги', 'assets/exercise_pack/strong', 'Руки'),
+        trainingPageItemsBuilder('assets/exercise_pack/shoulder', 'Плечи', 'assets/exercise_pack/back', 'Спина'),
       ],
     );
   }
@@ -29,7 +29,11 @@ class _TrainingPageState extends State<TrainingPage> {
       children: [
         GestureDetector(
           onTap: () {
-            Navigator.pushNamed(context, '/exercise_page');
+            Navigator.push(context,
+              MaterialPageRoute(
+                  builder: (context) => ExercisePage(text: exerciseName1)
+              ),
+            );
           },
           child: Column(
             children: [
@@ -45,7 +49,11 @@ class _TrainingPageState extends State<TrainingPage> {
         ),
         GestureDetector(
           onTap: () {
-            Navigator.pushNamed(context, '/exercise_page');
+            Navigator.push(context,
+              MaterialPageRoute(
+                  builder: (context) => ExercisePage(text: exerciseName2)
+              ),
+            );
           },
           child: Column(
             children: [
@@ -65,7 +73,7 @@ class _TrainingPageState extends State<TrainingPage> {
 
   Widget _buildText(String text, double size, Color color) {
     return Text(
-      '$text',
+      text,
       style: TextStyle(
         fontSize: size,
         color: color,
