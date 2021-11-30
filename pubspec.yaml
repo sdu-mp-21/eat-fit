@@ -81,6 +81,7 @@ flutter:
    - assets/calories_page_pack/
    - assets/exercise_pack/
    - assets/DietPack/
+   - assets/about_page_pack/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
