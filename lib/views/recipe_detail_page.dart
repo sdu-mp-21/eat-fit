@@ -89,15 +89,15 @@ class _RecipeDetailState extends State<RecipeDetail> {
 
   Widget editButton() {
     return IconButton(
-      icon: Icon(Icons.edit_outlined),
-      onPressed: () async {
-        if (isLoading) return;
+        icon: Icon(Icons.edit_outlined),
+        onPressed: () async {
+          if (isLoading) return;
 
-        await Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => EditRecipePage(recipe: recipe),
-        ));
-        refreshRecipes();
-      }
+          await Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => EditRecipePage(recipe: recipe),
+          ));
+          refreshRecipes();
+        }
     );
   }
 

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_team_project/views/home.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({Key? key}) : super(key: key);
@@ -11,21 +13,29 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   final _formKey = GlobalKey<FormState>();
 
-  final firstNameEditingController = new TextEditingController();
-  final secondNameEditingController = new TextEditingController();
-  final emailEditingController = new TextEditingController();
-  final passwordEditingController = new TextEditingController();
-  final confirmPasswordEditingController = new TextEditingController();
+  final firstNameEditingController = TextEditingController();
+  final secondNameEditingController = TextEditingController();
+  final emailEditingController = TextEditingController();
+  final passwordEditingController = TextEditingController();
+  final confirmPasswordEditingController = TextEditingController();
 
 
   @override
   Widget build(BuildContext context) {
-
     final firstNameField = TextFormField(
       autofocus: false,
       controller: firstNameEditingController,
       keyboardType: TextInputType.name,
-      // validator: () {},
+      validator: (value) {
+        RegExp regex = RegExp(r'^.{3,}$');
+        if (value!.isEmpty) {
+          return ('Name cannot be empty');
+        }
+        if (!regex.hasMatch(value)) {
+          return ("Enter valid name (min 3 characters)");
+        }
+        return null;
+      },
       onSaved: (value) {
         firstNameEditingController.text = value!;
       },
@@ -44,7 +54,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       autofocus: false,
       controller: secondNameEditingController,
       keyboardType: TextInputType.name,
-      // validator: () {},
+      validator: (value) {
+        if (value!.isEmpty) {
+          return ('Surname cannot be empty');
+        }
+        return null;
+      },
       onSaved: (value) {
         secondNameEditingController.text = value!;
       },
@@ -63,7 +78,16 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       autofocus: false,
       controller: emailEditingController,
       keyboardType: TextInputType.emailAddress,
-      // validator: () {},
+      validator: (value) {
+        if (value!.isEmpty) {
+          return ("Please enter your email");
+        }
+        if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
+            .hasMatch(value)) {
+          return ("Please Enter a valid email");
+        }
+        return null;
+      },
       onSaved: (value) {
         emailEditingController.text = value!;
       },
@@ -83,7 +107,15 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       autofocus: false,
       controller: passwordEditingController,
       obscureText: true,
-      // validator: () {},
+      validator: (value) {
+        RegExp regex = RegExp(r'^.{6,}$');
+        if (value!.isEmpty) {
+          return ('Please Enter your password!');
+        }
+        if (!regex.hasMatch(value)) {
+          return ("Please Enter valid password (min 6 characters)");
+        }
+      },
       onSaved: (value) {
         passwordEditingController.text = value!;
       },
@@ -103,7 +135,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       autofocus: false,
       controller: confirmPasswordEditingController,
       obscureText: true,
-      // validator: () {},
+      validator: (value) {
+        if (confirmPasswordEditingController.text !=
+            passwordEditingController.text) {
+          return ("Password mismatch");
+        }
+        return null;
+      },
       onSaved: (value) {
         confirmPasswordEditingController.text = value!;
       },
@@ -124,8 +162,18 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       color: Colors.blueAccent,
       child: MaterialButton(
         padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-        minWidth: MediaQuery.of(context).size.width,
-        onPressed: () {},
+        minWidth: MediaQuery
+            .of(context)
+            .size
+            .width,
+        onPressed: () {
+          if (_formKey.currentState!.validate()) {
+            Fluttertoast.showToast(msg: "Account created successfully");
+            Navigator.pushAndRemoveUntil(
+                (context), MaterialPageRoute(builder: (context) => Home()), (
+                route) => false);
+          }
+        },
         child: Text('SignUp', textAlign: TextAlign.center,
             style: TextStyle(fontSize: 20,
                 color: Colors.white,
@@ -139,10 +187,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.blueAccent),
-          onPressed: () {
-            Navigator.pop(context);
-          }
+            icon: Icon(Icons.arrow_back, color: Colors.blueAccent),
+            onPressed: () {
+              Navigator.pop(context);
+            }
         ),
       ),
       backgroundColor: Colors.white,

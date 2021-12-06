@@ -25,6 +25,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   String bmi = "";
   String height = "";
   String weight = "";
+  String imagePath = '';
   String? directoryPath;
   File? dataFile;
 
@@ -64,7 +65,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
 
   Person refreshData() {
-    Person person = Person(name, goal, age, bmi, height, weight);
+    Person person = Person(name, goal, age, bmi, height, weight, imagePath);
     return person;
   }
 

@@ -26,8 +26,6 @@ class _RecipesPageState extends State<RecipesPage> {
     refreshRecipes();
   }
 
-  List<Color> containerColors = [Colors.amberAccent, Colors.teal];
-  String goal = '';
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -68,9 +66,9 @@ class _RecipesPageState extends State<RecipesPage> {
         return GestureDetector(
           onTap: () {
             Navigator.push(context,
-            MaterialPageRoute(
-              builder: (context) => RecipeDetail(recipeId: recipe.id!)
-            )).then((value) => refreshRecipes());
+                MaterialPageRoute(
+                    builder: (context) => RecipeDetail(recipeId: recipe.id!)
+                )).then((value) => refreshRecipes());
           },
           child: Container(
             padding: EdgeInsets.fromLTRB(15, 10, 15, 10),

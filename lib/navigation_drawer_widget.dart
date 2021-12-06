@@ -73,29 +73,12 @@ class _SideNavigationBarState extends State<SideNavigationBar> {
               children: [
                 Icon(
                   Icons.palette_outlined,
-                  color: Colors.pink,
+                  color: Colors.purple,
                   size: 35,
                 ),
                 SizedBox(width: 15),
                 Text(
                   'Тема',
-                  style: TextStyle(
-                      fontSize: 20
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(height: 15,),
-            Row(
-              children: [
-                Icon(
-                  Icons.fingerprint,
-                  color: Colors.deepPurple,
-                  size: 35,
-                ),
-                SizedBox(width: 15),
-                Text(
-                  'Пароль',
                   style: TextStyle(
                       fontSize: 20
                   ),

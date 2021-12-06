@@ -62,100 +62,103 @@ class _EditRecipePageState extends State<EditRecipePage> {
       appBar: AppBar(
         title: _buildText('Поменять рецепт', 22, Colors.white),
       ),
-      body: Form(
-        key: _formKey,
-        child: Container(
-          padding: EdgeInsets.all(20),
-          child: Column(
-            children: [
-              TextFormField(
-                minLines: 1,
-                maxLines: 1,
-                onChanged: (value) {
-                  name = value;
-                },
-                style: TextStyle(
-                  fontSize: 16,
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Form(
+          key: _formKey,
+          child: Container(
+            padding: EdgeInsets.all(20),
+            child: Column(
+              children: [
+                TextFormField(
+                  minLines: 1,
+                  maxLines: 1,
+                  onChanged: (value) {
+                    name = value;
+                  },
+                  style: TextStyle(
+                    fontSize: 16,
+                  ),
+                  decoration: InputDecoration(labelText: 'Название'),
+                  controller: TextEditingController(text: name),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Пожалуйста, введите значение';
+                    }
+                    return null;
+                  },
                 ),
-                decoration: InputDecoration(labelText: 'Название'),
-                controller: TextEditingController(text: name),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Пожалуйста, введите значение';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                minLines: 1,
-                maxLines: 1,
-                onChanged: (value) {
-                  time = value;
-                },
-                style: TextStyle(
-                  fontSize: 16,
+                TextFormField(
+                  minLines: 1,
+                  maxLines: 1,
+                  onChanged: (value) {
+                    time = value;
+                  },
+                  style: TextStyle(
+                    fontSize: 16,
+                  ),
+                  decoration: InputDecoration(labelText: 'Время приготовления'),
+                  controller: TextEditingController(text: time),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Пожалуйста, введите значение';
+                    }
+                    return null;
+                  },
                 ),
-                decoration: InputDecoration(labelText: 'Время приготовления'),
-                controller: TextEditingController(text: time),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Пожалуйста, введите значение';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                minLines: 1,
-                maxLines: null,
-                onChanged: (value) {
-                  ingredients = value;
-                },
-                style: TextStyle(
-                  fontSize: 16,
+                TextFormField(
+                  minLines: 1,
+                  maxLines: null,
+                  onChanged: (value) {
+                    ingredients = value;
+                  },
+                  style: TextStyle(
+                    fontSize: 16,
+                  ),
+                  decoration: InputDecoration(labelText: 'Ингредиенты'),
+                  controller: TextEditingController(text: ingredients),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Пожалуйста, введите значение';
+                    }
+                    return null;
+                  },
                 ),
-                decoration: InputDecoration(labelText: 'Ингредиенты'),
-                controller: TextEditingController(text: ingredients),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Пожалуйста, введите значение';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                minLines: 1,
-                maxLines: null,
-                onChanged: (value) {
-                  cooking = value;
-                },
-                style: TextStyle(
-                  fontSize: 16,
+                TextFormField(
+                  minLines: 1,
+                  maxLines: null,
+                  onChanged: (value) {
+                    cooking = value;
+                  },
+                  style: TextStyle(
+                    fontSize: 16,
+                  ),
+                  decoration: InputDecoration(labelText: 'Процесс приготовления'),
+                  controller: TextEditingController(text: cooking),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Пожалуйста, введите значение';
+                    }
+                    return null;
+                  },
                 ),
-                decoration: InputDecoration(labelText: 'Процесс приготовления'),
-                controller: TextEditingController(text: cooking),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Пожалуйста, введите значение';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 15),
-              RaisedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    updateRecipe();
-                    showToast('Рецепт изменен!').then((_) {
-                      Navigator.pop(context, true);
-                    });
-                  } else {
-                    showToast('Пожалуйста, введите значения!');
-                  }
-                },
-                color: Colors.blueAccent,
-                child: _buildText('Изменить', 18, Colors.white),
-              ),
-            ],
+                SizedBox(height: 15),
+                RaisedButton(
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      updateRecipe();
+                      showToast('Рецепт изменен!').then((_) {
+                        Navigator.pop(context, true);
+                      });
+                    } else {
+                      showToast('Пожалуйста, введите значения!');
+                    }
+                  },
+                  color: Colors.blueAccent,
+                  child: _buildText('Изменить', 18, Colors.white),
+                ),
+              ],
+            ),
           ),
         ),
       ),

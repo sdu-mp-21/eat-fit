@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_team_project/views/home.dart';
+import 'package:flutter_team_project/views/registration_screen.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -11,8 +14,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final _formKey = GlobalKey<FormState>();
 
-  final TextEditingController emailController = new TextEditingController();
-  final TextEditingController passwordController = new TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +24,16 @@ class _LoginScreenState extends State<LoginScreen> {
       autofocus: false,
       controller: emailController,
       keyboardType: TextInputType.emailAddress,
-      // validator: () {},
+      validator: (value) {
+        if (value!.isEmpty){
+          return ("Please enter your email");
+        }
+        if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
+            .hasMatch(value)) {
+          return ("Please Enter a valid email");
+        }
+        return null;
+      },
       onSaved: (value) {
         emailController.text = value!;
       },
@@ -30,7 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
         contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
         hintText: "Email",
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10)
+            borderRadius: BorderRadius.circular(10)
         ),
       ),
     );
@@ -39,7 +52,15 @@ class _LoginScreenState extends State<LoginScreen> {
       autofocus: false,
       controller: passwordController,
       obscureText: true,
-      // validator: () {},
+      validator: (value) {
+        RegExp regex = RegExp(r'^.{6,}$');
+        if (value!.isEmpty) {
+          return ('Please Enter your password!');
+        }
+        if (!regex.hasMatch(value)) {
+          return ("Please Enter valid password (min 6 characters)");
+        }
+      },
       onSaved: (value) {
         passwordController.text = value!;
       },
@@ -61,11 +82,16 @@ class _LoginScreenState extends State<LoginScreen> {
       child: MaterialButton(
         padding: EdgeInsets.fromLTRB(20, 15, 20, 15),
         minWidth: MediaQuery.of(context).size.width,
-        onPressed: () {},
+        onPressed: () {
+          if (_formKey.currentState!.validate()) {
+            Fluttertoast.showToast(msg:"Login Successful");
+            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => Home()));
+          }
+        },
         child: Text('Login', textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 20,
-            color: Colors.white,
-            fontWeight: FontWeight.bold)
+            style: TextStyle(fontSize: 20,
+                color: Colors.white,
+                fontWeight: FontWeight.bold)
         ),
       ),
     );
@@ -86,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(
                       height: 200,
                       child: Image.asset('assets/ic_launcher.png',
-                      fit: BoxFit.contain,),
+                        fit: BoxFit.contain,),
                     ),
                     SizedBox(height: 45),
                     emailField,
@@ -94,16 +120,20 @@ class _LoginScreenState extends State<LoginScreen> {
                     passwordField,
                     SizedBox(height: 35),
                     loginButton,
-                    SizedBox(height: 15),
+                    SizedBox(height: 25),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("Don't have an account? "),
+                        Text("Don't have an account? ", style: TextStyle(fontSize: 16,)),
                         GestureDetector(
-                          onTap: () {},
-                          child: Text("SignUp", style: TextStyle(fontWeight: FontWeight.bold,
-                          color: Colors.blue,
-                          fontSize: 15,))
+                            onTap: () {
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) => RegistrationScreen()
+                              ));
+                            },
+                            child: Text("SignUp", style: TextStyle(fontWeight: FontWeight.bold,
+                              color: Colors.blue,
+                              fontSize: 16,))
                         ),
                       ],
                     ),

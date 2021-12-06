@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_team_project/models/muscle_group_training.dart';
+import 'package:flutter_team_project/views/exact_exercise_page_widgets/abs_exercise.dart';
+import 'package:flutter_team_project/views/exact_exercise_page_widgets/arm_exercise.dart';
+import 'package:flutter_team_project/views/exact_exercise_page_widgets/chest_exercise.dart';
+import 'package:flutter_team_project/views/exact_exercise_page_widgets/leg_exercise.dart';
+import 'package:flutter_team_project/views/exact_exercise_page_widgets/shoulders_exercise.dart';
+import 'package:flutter_team_project/views/exact_exercise_page_widgets/spine_exercise.dart';
 
 class ExercisePage extends StatefulWidget {
   final String? text;
@@ -65,51 +71,55 @@ class _ExercisePageState extends State<ExercisePage> {
         title: _buildText('$text', 22, Colors.white),
         centerTitle: true,
       ),
-      body: Container(
-        padding: EdgeInsets.all(20),
-        child: Column(
-          children: [
-            _buildText('Тренировка: $text', 22, Colors.black),
-            SizedBox(height: 15,),
-            Container(
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Container(
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.timer_rounded,
-                              size: 20,
-                            ),
-                            SizedBox(width: 2,),
-                            _buildText('$trainingTime минут', 20, Colors.black),
-                          ],
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Container(
+          padding: EdgeInsets.all(20),
+          child: Column(
+            children: [
+              _buildText('Тренировка: $text', 22, Colors.black),
+              SizedBox(height: 15,),
+              Container(
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Container(
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.timer_rounded,
+                                size: 20,
+                              ),
+                              SizedBox(width: 2,),
+                              _buildText('$trainingTime минут', 20, Colors.black),
+                            ],
+                          ),
                         ),
-                      ),
-                      Container(
-                        child: Row(
-                          children: [
-                            Icon(
-                              Icons.local_fire_department_outlined,
-                              size: 20,
-                            ),
-                            SizedBox(width: 2,),
-                            _buildText('$burnedCalories ккал.', 20, Colors.black),
-                          ],
+                        Container(
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.local_fire_department_outlined,
+                                size: 20,
+                              ),
+                              SizedBox(width: 2,),
+                              _buildText('$burnedCalories ккал.', 20, Colors.black),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
-            ),
-            SizedBox(height: 15,),
-            _buildText('Упражнении: $amountOfExercise', 22, Colors.black),
-            _buildExerciseElement(),
-          ],
+              SizedBox(height: 15,),
+              _buildText('Упражнении: $amountOfExercise', 22, Colors.black),
+              SizedBox(height: 15,),
+              _buildExerciseElement(),
+            ],
+          ),
         ),
       ),
     );

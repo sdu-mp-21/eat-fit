@@ -6,16 +6,18 @@ class Person {
   String? bmi;
   String? height;
   String? weight;
+  String? imagePath;
 
-  Person(this.name, this.goal, this.age, this.bmi, this.height, this.weight);
+  Person(this.name, this.goal, this.age, this.bmi, this.height, this.weight, this.imagePath);
 
   Person.fromJson(Map<String, String> json) {
-    this.name = json['name'];
-    this.goal = json['goal'];
-    this.age = json['age'];
-    this.bmi = json['bmi'];
-    this.height = json['height'];
-    this.weight = json['weight'];
+    name = json['name'];
+    goal = json['goal'];
+    age = json['age'];
+    bmi = json['bmi'];
+    height = json['height'];
+    weight = json['weight'];
+    imagePath = json['imagePath'];
   }
 
   Map<String, String> toJson() {
@@ -26,6 +28,7 @@ class Person {
       'bmi': bmi!,
       'height': height!,
       'weight': weight!,
+      'imagePath': imagePath!,
     };
   }
 }

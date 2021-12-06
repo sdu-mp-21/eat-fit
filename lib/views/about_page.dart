@@ -45,25 +45,6 @@ class AboutPage extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text(
-                      'Актуальные данные о\nпогоде вашего города',
-                      style: TextStyle(
-                        fontSize: 18,
-                      ),
-                    ),
-                    Image.asset(
-                      'assets/about_page_pack/weather-app.png',
-                      width: 80,
-                      height: 80,
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 35,),
-              Container(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
                     Image.asset(
                       'assets/about_page_pack/calories-calculator.png',
                       width: 80,

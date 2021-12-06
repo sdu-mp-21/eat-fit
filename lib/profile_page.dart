@@ -1,9 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:image_picker/image_picker.dart';
 import 'models/person.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart';
 
 
 class ProfilePage extends StatefulWidget {
@@ -28,6 +32,10 @@ class _ProfilePageState extends State<ProfilePage> {
   File? myFile;
   String fileText = '';
 
+  File? image;
+  String? imagePath;
+  ImageSource imageSource = ImageSource.gallery;
+
   Future getPath() async{
     final dir = await getApplicationDocumentsDirectory();
     dirPath = dir.path;
@@ -36,15 +44,6 @@ class _ProfilePageState extends State<ProfilePage> {
   String convertToJson(Person person) {
     String json = jsonEncode(person);
     return json;
-  }
-
-  Future writeFile() async {
-    Person person = Person('Равиль Аман', 'Набрать мышечную массу', '19', '19.57', '178', '62');
-    try {
-      await myFile!.writeAsString(convertToJson(person));
-    } catch (e) {
-      print(e);
-    }
   }
 
   Future readFile() async{
@@ -58,7 +57,17 @@ class _ProfilePageState extends State<ProfilePage> {
         bmi = dataFromFile['bmi'] as String;
         height = dataFromFile['height'] as String;
         weight = dataFromFile['weight'] as String;
+        imagePath = dataFromFile['imagePath'] as String;
       });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future writeFile() async {
+    Person person = Person(name, goal, age, bmi, height, weight, imagePath);
+    try {
+      await myFile!.writeAsString(convertToJson(person));
     } catch (e) {
       print(e);
     }
@@ -74,10 +83,38 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     getPath().then((_) {
       myFile = File('$dirPath/person.txt');
-      // writeFile();
       readFile();
     });
+    setImage();
     super.initState();
+  }
+
+  Future pickImage() async {
+    try {
+      final image = await ImagePicker().pickImage(source: imageSource);
+      if (image == null) return;
+      final imagePermanent = await saveImagePermanently(image.path);
+      setState(() {
+        this.image = imagePermanent;
+      });
+    } on PlatformException catch (e) {
+      print('Failed to pick image $e');
+    }
+  }
+
+  Future<File> saveImagePermanently(String imagePath) async{
+    final directory = await getApplicationDocumentsDirectory();
+    final name = basename(imagePath);
+    final image = File('${directory.path}/$name');
+    this.imagePath = '${directory.path}/$name';
+    writeFile();
+    return File(imagePath).copy(image.path);
+  }
+
+  void setImage() async {
+    setState(() {
+      image = File(imagePath!);
+    });
   }
 
   @override
@@ -107,17 +144,16 @@ class _ProfilePageState extends State<ProfilePage> {
           physics: AlwaysScrollableScrollPhysics(),
           child: Column(
             children: [
-              Container(
-                padding: EdgeInsets.fromLTRB(0, 15, 0, 0),
-                width: 180,
-                height: 180,
-                child: Image(
-                  image: AssetImage('assets/profile_icon.png'),
-                ),
+              SizedBox(height: 15),
+              GestureDetector(
+                onTap: () {
+                  showImagePickOptionDialogue(context);
+                },
+                child: image != null ? ClipOval(child: Image.file(image!, width: 200, height: 200)) : Image.asset('assets/profile_icon.png', width: 200, height: 200,),
               ),
               SizedBox(height: 15),
               _buildText(name, 28),
-              SizedBox(height: 35),
+              SizedBox(height: 30),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -154,6 +190,49 @@ class _ProfilePageState extends State<ProfilePage> {
       style: TextStyle(
         fontSize: size,
       ),
+    );
+  }
+
+  showImagePickOptionDialogue(BuildContext context) async {
+    await showDialog(
+        barrierDismissible: true,
+        context: context,
+        builder: (_) {
+          return CupertinoAlertDialog(
+            title: Text('Выберите картинку'),
+            content: Text('Выберите откуда загрузить картинку'),
+            actions: [
+              CupertinoDialogAction(
+                child: GestureDetector(
+                  onTap: () {
+                    imageSource = ImageSource.gallery;
+                    Navigator.pop(context);
+                    pickImage();
+                  },
+                  child: Image.asset(
+                    'assets/gallery.png',
+                    width: 65,
+                    height: 65,
+                  ),
+                ),
+              ),
+              CupertinoDialogAction(
+                child: GestureDetector(
+                  onTap: () {
+                    imageSource = ImageSource.camera;
+                    Navigator.pop(context);
+                    pickImage();
+                  },
+                  child: Image.asset(
+                    'assets/camera.png',
+                    width: 65,
+                    height: 65,
+                  ),
+                ),
+              ),
+            ],
+          );
+        }
     );
   }
 }
