@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_team_project/models/person.dart';
+import 'package:flutter_team_project/models/person_json.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:string_validator/string_validator.dart';
@@ -34,12 +34,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
     directoryPath = directory.path;
   }
 
-  String convertToJson(Person person) {
+  String convertToJson(PersonJson person) {
     String json = jsonEncode(person);
     return json;
   }
 
-  Future writeFile(Person person) async{
+  Future writeFile(PersonJson person) async{
     try {
       await dataFile!.writeAsString(convertToJson(person));
     } catch (e) {
@@ -64,8 +64,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
     }
   }
 
-  Person refreshData() {
-    Person person = Person(name, goal, age, bmi, height, weight, imagePath);
+  PersonJson refreshData() {
+    PersonJson person = PersonJson(name, goal, age, bmi, height, weight, imagePath);
     return person;
   }
 

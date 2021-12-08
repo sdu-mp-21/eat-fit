@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'models/person.dart';
+import 'models/person_json.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 
@@ -41,7 +41,7 @@ class _ProfilePageState extends State<ProfilePage> {
     dirPath = dir.path;
   }
 
-  String convertToJson(Person person) {
+  String convertToJson(PersonJson person) {
     String json = jsonEncode(person);
     return json;
   }
@@ -65,7 +65,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future writeFile() async {
-    Person person = Person(name, goal, age, bmi, height, weight, imagePath);
+    PersonJson person = PersonJson(name, goal, age, bmi, height, weight, imagePath);
     try {
       await myFile!.writeAsString(convertToJson(person));
     } catch (e) {

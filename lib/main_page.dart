@@ -1,6 +1,11 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:dio/dio.dart';
+import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 
@@ -13,12 +18,22 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
 
+  int waterConsumption = 0;
+  double waterConsumptionPercent = 0;
+
+  String goal = "";
+  String age = "";
+  String height = "";
+  String weight = "";
+
+  String? dirPath;
+  File? myFile;
+
   String dayOfTheWeek = "";
 
-  Color color = Colors.white;
-
+  int steps = 1263;
   int timeCoefficient = 0;
-  double calorieBurnCoefficient = 1.6;
+  double? calorieBurnCoefficient;
   int ccalBurn = 0;
   int ccalMustBurn = 2300;
   int ccalCons = 1250;
@@ -26,6 +41,12 @@ class _MainPageState extends State<MainPage> {
 
   double burnPercentage = 0;
   double consPercentage = 0;
+
+  void calculateWaterConsumptionProcent() {
+    setState(() {
+      waterConsumptionPercent = waterConsumption / 8;
+    });
+  }
 
   Future _getDateFuture() async{
     DateTime date = DateTime.now();
@@ -40,9 +61,38 @@ class _MainPageState extends State<MainPage> {
     });
   }
 
-  ///
-  /// Здесь я должен потом написать метод где считаю с файла данные пользователя
-  /// и высчитаю коэффициент сжигания калории в минуту
+  Future getPath() async{
+    final dir = await getApplicationDocumentsDirectory();
+    return dir.path;
+  }
+
+  Future readFile() async{
+    try {
+      String fileContent = await myFile!.readAsString();
+      var dataFromFile = json.decode(fileContent);
+      setState(() {
+        goal = dataFromFile['goal'] as String;
+        age = dataFromFile['age'] as String;
+        height = dataFromFile['height'] as String;
+        weight = dataFromFile['weight'] as String;
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future getCalorieBurnCoefficient() async {
+    dirPath = await getPath();
+    myFile = File('$dirPath/person.txt');
+    readFile().then((_) {
+      setState(() {
+        calorieBurnCoefficient = (66.74 + (13.75 * int.parse(weight)) + (5 * int.parse(height)) - (6.74 * int.parse(age))) / 1440;
+      });
+      print('$calorieBurnCoefficient');
+      // return answer;
+      // double answer = (66.74 + (13.75 * int.parse(weight)) + (5 * int.parse(height)) - (6.74 * int.parse(age))) / 1440;
+    });
+  }
   ///
 
   Future getDateDifference() async{
@@ -56,21 +106,26 @@ class _MainPageState extends State<MainPage> {
 
   Future calculateBurnedCalories() async{
     timeCoefficient = await getDateDifference();
-    setState(() {
-      ccalBurn = (timeCoefficient * calorieBurnCoefficient).toInt();
+    getCalorieBurnCoefficient().then((_) {
+      setState(() {
+        ccalBurn = (timeCoefficient * calorieBurnCoefficient!).toInt();
+      });
+      print('$ccalBurn');
     });
-    return ccalBurn;
   }
 
   void getPercentages() async{
-    burnPercentage = await calculateBurnedCalories() / ccalMustBurn;
-    consPercentage = ccalCons / ccalMustCons;
+    calculateBurnedCalories().then((_) {
+      setState(() {
+        burnPercentage = ccalBurn / ccalMustBurn;
+        consPercentage = ccalCons / ccalMustCons;
+      });
+    });
   }
 
   @override
   void initState() {
     setDate();
-    calculateBurnedCalories();
     getPercentages();
     super.initState();
   }
@@ -79,17 +134,10 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.fromLTRB(20, 10, 20, 20),
-      color: color,
       child: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Column(
           children: [
-            // ElevatedButton(
-            //   onPressed: () {
-            //     _showThemeDialog(context);
-            //   },
-            //   child: Text('theme'),
-            // ),
             Container(
               padding: EdgeInsets.fromLTRB(45, 10, 45, 10),
               decoration: BoxDecoration(
@@ -171,6 +219,91 @@ class _MainPageState extends State<MainPage> {
                 ),
               ],
             ),
+            SizedBox(height: 20,),
+            Container(
+              padding: EdgeInsets.fromLTRB(40, 12, 40, 12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(Radius.circular(18)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 5,
+                    blurRadius: 7,
+                  ),
+                ],
+              ),
+              child: Column(
+                children: [
+                  textWidgetBuilder('Потребление воды:', 18, Colors.black),
+                  SizedBox(height: 7,),
+                  CircularPercentIndicator(
+                    radius: 130,
+                    lineWidth: 10,
+                    backgroundColor: Colors.white,
+                    percent: waterConsumption / 8,
+                    progressColor: Colors.blueAccent,
+                    circularStrokeCap: CircularStrokeCap.round,
+                    animation: true,
+                    center: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        textWidgetBuilder('$waterConsumption', 22, Colors.black),
+                        Image.asset(
+                          'assets/glass.png',
+                          width: 40,
+                          height: 40,
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 12),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          setState((){
+                            if (waterConsumption > 0) {
+                              waterConsumption--;
+                            }
+                          });
+                        },
+                        child: Container(
+                          margin: EdgeInsets.symmetric(horizontal: 10.0),
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Align(alignment: Alignment.center,child: textWidgetBuilder('-', 36, Colors.white)),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          setState((){
+                            if (waterConsumption < 8) {
+                              waterConsumption++;
+                            }
+                          });
+                        },
+                        child: Container(
+                          margin: EdgeInsets.symmetric(horizontal: 10.0),
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: Colors.blueAccent,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Align(alignment: Alignment.center, child: textWidgetBuilder('+', 26, Colors.white)),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -185,37 +318,5 @@ class _MainPageState extends State<MainPage> {
         color: textColor,
       ),
     );
-  }
-
-  _showThemeDialog(BuildContext context) async {
-    await showDialog(
-        barrierDismissible: true,
-        context: context,
-        builder: (_) {
-          return AlertDialog(
-              title: Text('App theme'),
-              content: Text('Please choose the theme:'),
-              actions: <Widget>[
-                TextButton(
-                    child: Text('Light'),
-                    onPressed: () {
-                      color = Colors.white;
-                      Navigator.pop(context, color);
-                    }
-                ),
-                TextButton(
-                    child: Text('Dark'),
-                    onPressed: () {
-                      color = Colors.black87;
-                      Navigator.pop(context, color);
-                    }
-                )
-              ]
-          );
-        }
-    );
-    setState(() {
-      color = color;
-    });
   }
 }
