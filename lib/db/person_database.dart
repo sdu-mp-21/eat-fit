@@ -31,6 +31,7 @@ class PersonDatabase {
 CREATE TABLE $tablePerson (
   ${PersonFields.id} $idType,
   ${PersonFields.name} $textType,
+  ${PersonFields.gender} $textType,
   ${PersonFields.goal} $textType, 
   ${PersonFields.age} $textType, 
   ${PersonFields.bmi} $textType,
@@ -70,13 +71,13 @@ CREATE TABLE $tablePerson (
     return result.map((json) => Person.fromJson(json)).toList();
   }
 
-  Future<int> update(Person recipe) async {
+  Future<int> update(Person person) async {
     final db = await instance.database;
     return db!.update(
       tablePerson,
-      recipe.toJson(),
+      person.toJson(),
       where: '${PersonFields.id} = ?',
-      whereArgs: [recipe.id],
+      whereArgs: [person.id],
     );
   }
 

@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_team_project/models/person_json.dart';
+import 'package:flutter_team_project/db/person_database.dart';
+import 'package:flutter_team_project/models/person.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:string_validator/string_validator.dart';
 
 
@@ -19,54 +20,34 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   final _formKey = GlobalKey<FormState>();
 
+  final goals = [
+    'Похудеть',
+    'Набрать мышечную массу',
+    'Сохранить текущий вес',
+  ];
+
+  final genders = [
+    'Мужчина',
+    'Женщина',
+    'Другое'
+  ];
+
   String name = "";
-  String goal = "";
+  String? goal;
   String age = "";
-  String bmi = "";
   String height = "";
   String weight = "";
+  String? bmi;
   String imagePath = '';
-  String? directoryPath;
-  File? dataFile;
+  String? gender;
+  late Person person;
+  bool isLoading = false;
 
-  Future getPath() async {
-    final directory = await getApplicationDocumentsDirectory();
-    directoryPath = directory.path;
-  }
-
-  String convertToJson(PersonJson person) {
-    String json = jsonEncode(person);
-    return json;
-  }
-
-  Future writeFile(PersonJson person) async{
-    try {
-      await dataFile!.writeAsString(convertToJson(person));
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  Future readFile() async{
-    try {
-      String fileContent = await dataFile!.readAsString();
-      var dataInJson = json.decode(fileContent);
-      setState(() {
-        name = dataInJson['name'] as String;
-        goal = dataInJson['goal'] as String;
-        age = dataInJson['age'] as String;
-        bmi = dataInJson['bmi'] as String;
-        height = dataInJson['height'] as String;
-        weight = dataInJson['weight'] as String;
-      });
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  PersonJson refreshData() {
-    PersonJson person = PersonJson(name, goal, age, bmi, height, weight, imagePath);
-    return person;
+  Future refreshPerson() async {
+    setState(() => isLoading = true);
+    person = await PersonDatabase.instance.readPerson(0);
+    setState(() => isLoading = false);
+    setData();
   }
 
   Future showToast(String message) {
@@ -79,12 +60,41 @@ class _EditProfilePageState extends State<EditProfilePage> {
     );
   }
 
+  void calculateBmi() {
+    double answer = int.parse(weight) / pow((int.parse(height) / 100), 2);
+    bmi = answer.toString().substring(0, 4);
+  }
+
+  Future updatePersonData() async {
+    calculateBmi();
+    final person = this.person.copy(
+      name: name,
+      gender: gender,
+      age: age,
+      goal: goal,
+      bmi: bmi,
+      height: height,
+      weight: weight,
+      imagePath: imagePath
+    );
+
+    await PersonDatabase.instance.update(person);
+  }
+
+  void setData() {
+    name = person.name!;
+    gender = person.gender!;
+    age = person.age!;
+    goal = person.goal!;
+    bmi = person.bmi!;
+    height = person.height!;
+    weight = person.weight!;
+    imagePath = person.imagePath!;
+  }
+
   @override
   void initState() {
-    getPath().then((_) {
-      dataFile = File('$directoryPath/person.txt');
-      readFile();
-    });
+    refreshPerson();
     super.initState();
   }
 
@@ -92,7 +102,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Profile Page'),
+        title: Text('Редактировать профиль'),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Form(
@@ -102,19 +113,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  width: 130,
-                  height: 130,
-                  child: IconButton(
-                    onPressed: null,
-                    icon: Icon(
-                      Icons.image_outlined,
-                      size: 140,
-                    ),
-                  ),
-                ),
-                SizedBox(height: 30),
-                _buildText('Имя:', 20),
                 TextFormField(
                   onChanged: (value) {
                     name = value;
@@ -122,7 +120,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   style: TextStyle(
                     fontSize: 16,
                   ),
-                  decoration: InputDecoration(labelText: 'Введите данные сюда'),
+                  decoration: InputDecoration(labelText: 'Имя'),
                   controller: TextEditingController(text: name),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -132,25 +130,24 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   },
                 ),
                 SizedBox(height: 20),
-                _buildText('Цель:', 20),
-                TextFormField(
-                  onChanged: (value) {
-                    goal = value;
-                  },
-                  style: TextStyle(
-                    fontSize: 16,
-                  ),
-                  decoration: InputDecoration(labelText: 'Введите данные сюда'),
-                  controller: TextEditingController(text: goal),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Пожалуйста введите значение';
-                    }
-                    return null;
-                  },
+                _buildText('Пол:', 16),
+                DropdownButton<String>(
+                  value: gender,
+                  items: genders.map(buildMenuItem).toList(),
+                  onChanged: (value) => setState((){
+                    gender = value;
+                  }),
                 ),
                 SizedBox(height: 20),
-                _buildText('Возраст:', 20),
+                _buildText('Цель:', 16),
+                DropdownButton<String>(
+                  value: goal,
+                  items: goals.map(buildMenuItem).toList(),
+                  onChanged: (value) => setState((){
+                    goal = value;
+                  }),
+                ),
+                SizedBox(height: 20),
                 TextFormField(
                   onChanged: (value) {
                     age = value;
@@ -158,7 +155,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   style: TextStyle(
                     fontSize: 16,
                   ),
-                  decoration: InputDecoration(labelText: 'Введите данные сюда'),
+                  decoration: InputDecoration(labelText: 'Возраст'),
                   controller: TextEditingController(text: age),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -170,27 +167,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   },
                 ),
                 SizedBox(height: 20),
-                _buildText('ИМТ:', 20),
-                TextFormField(
-                  onChanged: (value) {
-                    bmi = value;
-                  },
-                  style: TextStyle(
-                    fontSize: 16,
-                  ),
-                  decoration: InputDecoration(labelText: 'Введите данные сюда'),
-                  controller: TextEditingController(text: bmi),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Пожалуйста введите значение';
-                    } else if (!isInt(value) && !isFloat(value)) {
-                      return 'Пожалуйств введите число';
-                    }
-                    return null;
-                  },
-                ),
-                SizedBox(height: 20),
-                _buildText('Рост:', 20),
                 TextFormField(
                   onChanged: (value) {
                     height = value;
@@ -198,7 +174,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   style: TextStyle(
                     fontSize: 16,
                   ),
-                  decoration: InputDecoration(labelText: 'Введите данные сюда'),
+                  decoration: InputDecoration(labelText: 'Рост (в сантиметрах)'),
                   controller: TextEditingController(text: height),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -210,7 +186,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   },
                 ),
                 SizedBox(height: 20),
-                _buildText('Вес:', 20),
                 TextFormField(
                   onChanged: (value) {
                     weight = value;
@@ -218,7 +193,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   style: TextStyle(
                     fontSize: 16,
                   ),
-                  decoration: InputDecoration(labelText: 'Введите данные сюда'),
+                  decoration: InputDecoration(labelText: 'Вес в килограммах'),
                   controller: TextEditingController(text: weight),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -232,8 +207,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 SizedBox(height: 20),
                 ElevatedButton(
                   onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      writeFile(refreshData());
+                    if (_formKey.currentState!.validate()){
+                      updatePersonData();
+                      print('$gender');
                       showToast('Изменения сохранены успешно!').then((_) {
                         Navigator.pop(context, true);
                       });
@@ -248,6 +224,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
           ),
         ),
       ),
+    );
+  }
+
+  DropdownMenuItem<String> buildMenuItem(String item) {
+    return DropdownMenuItem(
+      value: item,
+      child: _buildText(item, 16),
     );
   }
 

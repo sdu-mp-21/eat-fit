@@ -60,7 +60,7 @@ class _EditRecipePageState extends State<EditRecipePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: _buildText('Поменять рецепт', 22, Colors.white),
+        title: _buildText('Изменить рецепт', 22, Colors.white),
       ),
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,

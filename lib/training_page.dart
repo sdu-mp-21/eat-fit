@@ -17,8 +17,8 @@ class _TrainingPageState extends State<TrainingPage> {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         _buildText('Тренировки на группы мышц:', 22, Colors.black),
-        trainingPageItemsBuilder('assets/exercise_pack/abs', 'Пресс', 'assets/exercise_pack/body', 'Грудь'),
-        trainingPageItemsBuilder('assets/exercise_pack/leg', 'Ноги', 'assets/exercise_pack/strong', 'Руки'),
+        trainingPageItemsBuilder('assets/exercise_pack/abs', 'Пресс', 'assets/exercise_pack/chest', 'Грудь'),
+        trainingPageItemsBuilder('assets/exercise_pack/leg', 'Ноги', 'assets/exercise_pack/arm', 'Руки'),
         trainingPageItemsBuilder('assets/exercise_pack/shoulder', 'Плечи', 'assets/exercise_pack/back', 'Спина'),
       ],
     );

@@ -4,8 +4,9 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_team_project/db/person_database.dart';
+import 'package:flutter_team_project/models/person.dart';
 import 'package:image_picker/image_picker.dart';
-import 'models/person_json.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 
@@ -22,71 +23,26 @@ class _ProfilePageState extends State<ProfilePage> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
 
   String name = "";
+  String gender = '';
   String goal = "";
   String age = "";
   String bmi = "";
   String height = "";
   String weight = "";
 
-  String? dirPath;
-  File? myFile;
-  String fileText = '';
+  late Person person;
+  bool isLoading = false;
 
   File? image;
   String? imagePath;
   ImageSource imageSource = ImageSource.gallery;
 
-  Future getPath() async{
-    final dir = await getApplicationDocumentsDirectory();
-    dirPath = dir.path;
-  }
-
-  String convertToJson(PersonJson person) {
-    String json = jsonEncode(person);
-    return json;
-  }
-
-  Future readFile() async{
-    try {
-      String fileContent = await myFile!.readAsString();
-      var dataFromFile = json.decode(fileContent);
-      setState(() {
-        name = dataFromFile['name'] as String;
-        goal = dataFromFile['goal'] as String;
-        age = dataFromFile['age'] as String;
-        bmi = dataFromFile['bmi'] as String;
-        height = dataFromFile['height'] as String;
-        weight = dataFromFile['weight'] as String;
-        imagePath = dataFromFile['imagePath'] as String;
-      });
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  Future writeFile() async {
-    PersonJson person = PersonJson(name, goal, age, bmi, height, weight, imagePath);
-    try {
-      await myFile!.writeAsString(convertToJson(person));
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  Future<void> refreshData() async{
-    setState(() {
-      readFile();
-    });
-  }
-
-  @override
-  void initState() {
-    getPath().then((_) {
-      myFile = File('$dirPath/person.txt');
-      readFile();
-    });
+  Future refreshPerson() async {
+    setState(() => isLoading = true);
+    person = await PersonDatabase.instance.readPerson(0);
+    setState(() => isLoading = false);
+    setData();
     setImage();
-    super.initState();
   }
 
   Future pickImage() async {
@@ -97,6 +53,7 @@ class _ProfilePageState extends State<ProfilePage> {
       setState(() {
         this.image = imagePermanent;
       });
+      updatePersonData();
     } on PlatformException catch (e) {
       print('Failed to pick image $e');
     }
@@ -106,15 +63,46 @@ class _ProfilePageState extends State<ProfilePage> {
     final directory = await getApplicationDocumentsDirectory();
     final name = basename(imagePath);
     final image = File('${directory.path}/$name');
-    this.imagePath = '${directory.path}/$name';
-    writeFile();
+    this.imagePath = image.path;
     return File(imagePath).copy(image.path);
+  }
+
+  Future updatePersonData() async {
+    final person = this.person.copy(
+        name: name,
+        gender: gender,
+        age: age,
+        goal: goal,
+        bmi: bmi,
+        height: height,
+        weight: weight,
+        imagePath: imagePath
+    );
+
+    await PersonDatabase.instance.update(person);
   }
 
   void setImage() async {
     setState(() {
       image = File(imagePath!);
     });
+  }
+
+  void setData() {
+    name = person.name!;
+    gender = person.gender!;
+    age = person.age!;
+    goal = person.goal!;
+    bmi = person.bmi!;
+    height = person.height!;
+    weight = person.weight!;
+    imagePath = person.imagePath!;
+  }
+
+  @override
+  void initState() {
+    refreshPerson();
+    super.initState();
   }
 
   @override
@@ -127,7 +115,7 @@ class _ProfilePageState extends State<ProfilePage> {
           IconButton(
             padding: EdgeInsets.only(right: 15),
             onPressed: () {
-              Navigator.pushNamed(context, '/edit_profile_page').then((value) => {refreshData()});
+              Navigator.pushNamed(context, '/edit_profile_page').then((value) => {refreshPerson()});
             },
             icon: Icon(
               Icons.edit_outlined,
@@ -139,7 +127,7 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       body: RefreshIndicator(
         key: _refreshIndicatorKey,
-        onRefresh: refreshData,
+        onRefresh: refreshPerson,
         child: SingleChildScrollView(
           physics: AlwaysScrollableScrollPhysics(),
           child: Column(
@@ -149,24 +137,28 @@ class _ProfilePageState extends State<ProfilePage> {
                 onTap: () {
                   showImagePickOptionDialogue(context);
                 },
-                child: image != null ? ClipOval(child: Image.file(image!, width: 200, height: 200)) : Image.asset('assets/profile_icon.png', width: 200, height: 200,),
+                child: imagePath?.length == 0 ? Image.asset('assets/profile_icon.png', width: 200, height: 200,) : ClipOval(child: Image.file(image!, width: 200, height: 200)),
               ),
               SizedBox(height: 15),
-              _buildText(name, 28),
+              _buildText(person.name!, 28),
               SizedBox(height: 30),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  _buildProperties("Возраст", age),
-                  _buildProperties("ИМТ", bmi),
-                  _buildProperties("Рост", "$height см"),
-                  _buildProperties("Вес", "$weight кг"),
+                  _buildProperties("Возраст", person.age!),
+                  _buildProperties("ИМТ", person.bmi!),
+                  _buildProperties("Рост", "${person.height!} см"),
+                  _buildProperties("Вес", "${person.weight!} кг"),
                 ],
               ),
               SizedBox(height: 30),
               _buildText('Цель:', 16),
               SizedBox(height: 5),
-              _buildText(goal, 20),
+              _buildText(person.goal!, 20),
+              SizedBox(height: 20),
+              _buildText('Пол:', 16),
+              SizedBox(height: 5),
+              _buildText(person.gender!, 20),
             ],
           ),
         ),

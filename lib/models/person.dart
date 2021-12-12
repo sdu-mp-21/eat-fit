@@ -2,11 +2,12 @@ final String tablePerson = 'person';
 
 class PersonFields {
   static final List<String> values = [
-    id, name, goal, age, bmi, height, weight, imagePath
+    id, name, gender, goal, age, bmi, height, weight, imagePath
   ];
 
   static final String id = 'id';
   static final String name = 'name';
+  static final String gender = 'gender';
   static final String goal = 'goal';
   static final String age = 'age';
   static final String bmi = 'bmi';
@@ -19,6 +20,7 @@ class Person {
 
   final int? id;
   final String? name;
+  final String? gender;
   final String? goal;
   final String? age;
   final String? bmi;
@@ -26,11 +28,12 @@ class Person {
   final String? weight;
   final String? imagePath;
 
-  const Person({this.id, required this.name, required this.goal, required this.age, this.bmi, required this.height, required this.weight, this.imagePath});
+  const Person({this.id, required this.name, required this.gender, required this.goal, required this.age, this.bmi, required this.height, required this.weight, this.imagePath});
 
   static Person fromJson(Map<String, Object?> json) => Person(
     id: json[PersonFields.id] as int?,
     name: json[PersonFields.name] as String?,
+    gender: json[PersonFields.gender] as String?,
     goal: json[PersonFields.goal] as String?,
     age: json[PersonFields.age] as String?,
     bmi: json[PersonFields.bmi] as String?,
@@ -42,6 +45,7 @@ class Person {
   Person copy({
     int? id,
     String? name,
+    String? gender,
     String? goal,
     String? age,
     String? bmi,
@@ -51,6 +55,7 @@ class Person {
   }) => Person(
     id: id ?? this.id,
     name: name ?? this.name,
+    gender: gender ?? this.gender,
     goal: goal ?? this.goal,
     age: age ?? this.age,
     bmi: bmi ?? this.bmi,
@@ -62,6 +67,7 @@ class Person {
   Map<String, Object?> toJson() => {
     PersonFields.id: id,
     PersonFields.name: name,
+    PersonFields.gender: gender,
     PersonFields.goal: goal,
     PersonFields.age: age,
     PersonFields.bmi: bmi,

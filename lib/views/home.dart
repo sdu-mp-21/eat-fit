@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_team_project/db/person_database.dart';
 import 'package:flutter_team_project/db/recipes_database.dart';
 import 'package:flutter_team_project/views/login_screen.dart';
 
@@ -27,6 +28,7 @@ class _HomeState extends State<Home> {
   @override
   void dispose() {
     RecipesDatabase.instance.close();
+    PersonDatabase.instance.close();
     super.dispose();
   }
 

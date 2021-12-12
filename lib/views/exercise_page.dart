@@ -150,25 +150,6 @@ class _ExercisePageState extends State<ExercisePage> {
     return exactExercisePage;
   }
 
-  // Widget _buildExerciseElement(String exerciseName, String repeat) {
-  //   return Row(
-  //     children: [
-  //       Image.asset(
-  //           'assets/exercise_pack/exercises.png',
-  //         width: 40,
-  //         height: 40,
-  //       ),
-  //       Column(
-  //         children: [
-  //           _buildText(exerciseName, 18, Colors.black),
-  //           SizedBox(height: 7,),
-  //           _buildText(repeat, 18, Colors.black),
-  //         ],
-  //       ),
-  //     ],
-  //   );
-  // }
-
   Widget _buildText(String text, double size, Color color) {
     return Text(
       text,

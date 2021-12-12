@@ -2,6 +2,8 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_team_project/db/person_database.dart';
+import 'package:flutter_team_project/models/person.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:string_validator/string_validator.dart';
 
@@ -14,10 +16,46 @@ class BodyPage2 extends StatefulWidget {
 
 class _BodyPage2State extends State<BodyPage2> {
 
+  bool isLoading = false;
+  final _formKey = GlobalKey<FormState>();
+
+  int id = 0;
+  String name = "";
+  String? gender;
+  String? goal;
+  String age = "";
+  String height = "";
+  String weight = "";
+  String? bmi;
+  String imagePath = '';
+  String? directoryPath;
+  File? dataFile;
+
+  Future addPerson() async {
+    final person = Person(
+      id: id,
+      name: name,
+      gender: gender,
+      goal: goal,
+      age: age,
+      height: height,
+      weight: weight,
+      bmi: bmi,
+      imagePath: imagePath
+    );
+    await PersonDatabase.instance.create(person);
+  }
+
   final goals = [
     'Похудеть',
     'Набрать мышечную массу',
     'Сохранить текущий вес',
+  ];
+
+  final genders = [
+    'Мужчина',
+    'Женщина',
+    'Другое'
   ];
 
   Future showToast(String message) {
@@ -30,19 +68,9 @@ class _BodyPage2State extends State<BodyPage2> {
     );
   }
 
-  final _formKey = GlobalKey<FormState>();
-
-  String name = "";
-  String? goal;
-  String age = "";
-  String height = "";
-  String weight = "";
-  String? directoryPath;
-  File? dataFile;
-
-  String bmi() {
-    double answer = int.parse(weight) / pow(int.parse(height), 2);
-    return answer.toString();
+  void calculateBmi() {
+    double answer = int.parse(weight) / pow((int.parse(height) / 100), 2);
+    bmi = answer.toString().substring(0, 4);
   }
 
   @override
@@ -52,114 +80,120 @@ class _BodyPage2State extends State<BodyPage2> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.vertical,
-      child: Form(
-        key: _formKey,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Image.asset(
-              'assets/humanoid.png',
-              width: 100,
-              height: 100,
-            ),
-            const SizedBox(height: 10),
-            _buildText('Введите ваши данные', 20),
-            const SizedBox(height: 30),
-            Row(
-              children: [
-                Expanded(
-                  child: TextFormField(
-                    onChanged: (value) {
-                      name = value;
-                    },
-                    style: const TextStyle(fontSize: 16),
-                    decoration: const InputDecoration(labelText: 'Имя'),
-                    controller: TextEditingController(text: name),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Пожалуйста введите значение';
-                      }
-                      return null;
-                    },
-                  ),
+    return Form(
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Image.asset(
+            'assets/humanoid.png',
+            width: 100,
+            height: 100,
+          ),
+          const SizedBox(height: 10),
+          _buildText('Введите ваши данные', 20),
+          const SizedBox(height: 30),
+          Row(
+            children: [
+              Expanded(
+                child: TextFormField(
+                  onChanged: (value) {
+                    name = value;
+                  },
+                  style: const TextStyle(fontSize: 16),
+                  decoration: const InputDecoration(labelText: 'Имя'),
+                  controller: TextEditingController(text: name),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Пожалуйста введите значение';
+                    }
+                    return null;
+                  },
                 ),
-                const SizedBox(width: 20),
-                Expanded(
-                  child: TextFormField(
-                    onChanged: (value) {
-                      age = value;
-                    },
-                    style: const TextStyle(fontSize: 16),
-                    decoration: const InputDecoration(labelText: 'Возраст'),
-                    controller: TextEditingController(text: age),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Пожалуйста введите значение';
-                      } else if (!isInt(value)) {
-                        return 'Пожалуйств введите целое число';
-                      }
-                      return null;
-                    },
-                  ),
+              ),
+              const SizedBox(width: 20),
+              Expanded(
+                child: TextFormField(
+                  onChanged: (value) {
+                    age = value;
+                  },
+                  style: const TextStyle(fontSize: 16),
+                  decoration: const InputDecoration(labelText: 'Возраст'),
+                  controller: TextEditingController(text: age),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Пожалуйста введите значение';
+                    } else if (!isInt(value)) {
+                      return 'Пожалуйств введите целое число';
+                    }
+                    return null;
+                  },
                 ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Row(
-              children: [
-                Expanded(
-                  child: TextFormField(
-                    onChanged: (value) {
-                      height = value;
-                    },
-                    style: const TextStyle(fontSize: 16),
-                    decoration: const InputDecoration(labelText: 'Рост (в сантиметрах)'),
-                    controller: TextEditingController(text: height),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Пожалуйста введите значение';
-                      } else if (!isInt(value) || !isFloat(value)) {
-                        return 'Пожалуйств введите число';
-                      }
-                      return null;
-                    },
-                  ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          Row(
+            children: [
+              Expanded(
+                child: TextFormField(
+                  onChanged: (value) {
+                    height = value;
+                  },
+                  style: const TextStyle(fontSize: 16),
+                  decoration: const InputDecoration(labelText: 'Рост (в сантиметрах)'),
+                  controller: TextEditingController(text: height),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Пожалуйста введите значение';
+                    } else if (!isInt(value) || !isFloat(value)) {
+                      return 'Пожалуйств введите число';
+                    }
+                    return null;
+                  },
                 ),
-                const SizedBox(width: 20),
-                Expanded(
-                  child: TextFormField(
-                    onChanged: (value) {
-                      weight = value;
-                    },
-                    style: const TextStyle(fontSize: 16,),
-                    decoration: const InputDecoration(labelText: 'Вес (в килограммах)'),
-                    controller: TextEditingController(text: weight),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Пожалуйста введите значение';
-                      } else if (!isInt(value) || !isFloat(value)) {
-                        return 'Пожалуйств введите число';
-                      }
-                      return null;
-                    },
-                  ),
+              ),
+              const SizedBox(width: 20),
+              Expanded(
+                child: TextFormField(
+                  onChanged: (value) {
+                    weight = value;
+                  },
+                  style: const TextStyle(fontSize: 16,),
+                  decoration: const InputDecoration(labelText: 'Вес (в килограммах)'),
+                  controller: TextEditingController(text: weight),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Пожалуйста введите значение';
+                    } else if (!isInt(value) || !isFloat(value)) {
+                      return 'Пожалуйств введите число';
+                    }
+                    return null;
+                  },
                 ),
-              ],
-            ),
-            const SizedBox(height: 25),
-            _buildText('Цель', 20),
-            const SizedBox(height: 10),
-            DropdownButton<String>(
-              value: goal,
-              items: goals.map(buildMenuItem).toList(),
-              onChanged: (value) => setState((){
-                goal = value;
-              }),
-            ),
-          ],
-        ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 25),
+          _buildText('Цель', 20),
+          const SizedBox(height: 10),
+          DropdownButton<String>(
+            value: goal,
+            items: goals.map(buildMenuItem).toList(),
+            onChanged: (value) => setState((){
+              goal = value;
+            }),
+          ),
+          _buildText('Пол', 20),
+          const SizedBox(height: 10),
+          DropdownButton<String>(
+            value: gender,
+            items: genders.map(buildMenuItem).toList(),
+            onChanged: (value) => setState((){
+              gender = value;
+            }),
+          ),
+        ],
       ),
     );
   }
@@ -182,6 +216,8 @@ class _BodyPage2State extends State<BodyPage2> {
 
   @override
   void dispose() {
+    calculateBmi();
+    addPerson();
     super.dispose();
   }
 }

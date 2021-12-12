@@ -16,40 +16,12 @@ class _OnBoardState extends State<OnBoard> {
 
   int currentIndex = 0;
   bool isButtonDisabled = true;
+  int lastIndex = 0;
 
   List<Widget> bodyPages = [
     const BodyPage1(),
     const BodyPage2(),
   ];
-
-  void incrementCounter() {
-    setState(() {
-      if (currentIndex < 1) {
-        currentIndex++;
-      } else if (currentIndex == 1) {
-        _storeOnBoardInfo();
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LoginScreen()));
-      }
-    });
-    if (currentIndex != 0) {
-      setState(() {
-        isButtonDisabled = false;
-      });
-    }
-  }
-
-  void decrementCounter() {
-    setState(() {
-      if (currentIndex > 0) {
-        currentIndex--;
-      }
-      if (currentIndex == 0) {
-        setState(() {
-          isButtonDisabled = true;
-        });
-      }
-    });
-  }
 
   _storeOnBoardInfo() async {
     int isViewed = 0;
@@ -74,43 +46,47 @@ class _OnBoardState extends State<OnBoard> {
           ),
         ],
       ),
-      body: Container(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            bodyPages[currentIndex],
-            Expanded(
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    RaisedButton(
-                      onPressed: isButtonDisabled ? null : decrementCounter,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
-                          side: BorderSide(color: isButtonDisabled ? Colors.white : Colors.blueAccent)),
-                      padding: const EdgeInsets.all(10.0),
-                      color: Colors.white,
-                      textColor: isButtonDisabled ? Colors.white60 : Colors.blueAccent,
-                      child: Text('Пред.'),
-                    ),
-                    RaisedButton(
-                      onPressed: () {
-                        incrementCounter();
-                      },
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0)),
-                      padding: const EdgeInsets.all(10.0),
-                      color: Colors.blueAccent,
-                      child: setText('След.', 15, Colors.white),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Container(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            children: [
+              bodyPages[currentIndex]
+            ],
+          ),
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: currentIndex,
+        type: BottomNavigationBarType.fixed,
+        selectedItemColor: Colors.blueAccent,
+        unselectedItemColor: Colors.grey,
+        items: [
+          BottomNavigationBarItem(
+            backgroundColor: Colors.white,
+            icon: Icon(
+              Icons.arrow_back_ios,
+            ),
+            title: Text('Пред.'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.arrow_forward_ios,
+            ),
+            title: Text('След.'),
+          ),
+        ],
+        onTap: (index) {
+          setState(() {
+            if (lastIndex == 1 && index == 1) {
+              _storeOnBoardInfo();
+              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LoginScreen()));
+            }
+            currentIndex = index;
+            lastIndex = currentIndex;
+          });
+        },
       ),
     );
   }

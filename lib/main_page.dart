@@ -1,11 +1,8 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
-import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:flutter_team_project/db/person_database.dart';
+import 'package:flutter_team_project/models/person.dart';
 import 'package:intl/intl.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 
@@ -18,6 +15,9 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
 
+  bool isLoading = false;
+  late Person person;
+
   int waterConsumption = 0;
   double waterConsumptionPercent = 0;
 
@@ -26,26 +26,22 @@ class _MainPageState extends State<MainPage> {
   String height = "";
   String weight = "";
 
-  String? dirPath;
-  File? myFile;
-
   String dayOfTheWeek = "";
 
-  int steps = 1263;
   int timeCoefficient = 0;
   double? calorieBurnCoefficient;
-  int ccalBurn = 0;
-  int ccalMustBurn = 2300;
-  int ccalCons = 1250;
-  int ccalMustCons = 2600;
+  double ccalBurn = 0;
+  double ccalMustBurn = 0;
+  double ccalCons = 0;
+  double ccalMustCons = 0;
 
-  double burnPercentage = 0;
-  double consPercentage = 0;
-
-  void calculateWaterConsumptionProcent() {
-    setState(() {
-      waterConsumptionPercent = waterConsumption / 8;
-    });
+  Future refreshPerson() async {
+    setState(() => isLoading = true);
+    person = await PersonDatabase.instance.readPerson(0);
+    setState(() => isLoading = false);
+    setData();
+    setDate();
+    getPercentages();
   }
 
   Future _getDateFuture() async{
@@ -61,39 +57,11 @@ class _MainPageState extends State<MainPage> {
     });
   }
 
-  Future getPath() async{
-    final dir = await getApplicationDocumentsDirectory();
-    return dir.path;
-  }
-
-  Future readFile() async{
-    try {
-      String fileContent = await myFile!.readAsString();
-      var dataFromFile = json.decode(fileContent);
-      setState(() {
-        goal = dataFromFile['goal'] as String;
-        age = dataFromFile['age'] as String;
-        height = dataFromFile['height'] as String;
-        weight = dataFromFile['weight'] as String;
-      });
-    } catch (e) {
-      print(e);
-    }
-  }
-
   Future getCalorieBurnCoefficient() async {
-    dirPath = await getPath();
-    myFile = File('$dirPath/person.txt');
-    readFile().then((_) {
-      setState(() {
-        calorieBurnCoefficient = (66.74 + (13.75 * int.parse(weight)) + (5 * int.parse(height)) - (6.74 * int.parse(age))) / 1440;
-      });
-      print('$calorieBurnCoefficient');
-      // return answer;
-      // double answer = (66.74 + (13.75 * int.parse(weight)) + (5 * int.parse(height)) - (6.74 * int.parse(age))) / 1440;
+    setState(() {
+      calorieBurnCoefficient = (66.74 + (13.75 * int.parse(weight)) + (5 * int.parse(height)) - (6.74 * int.parse(age))) / 1440;
     });
   }
-  ///
 
   Future getDateDifference() async{
     String currentDate = DateTime.now().toString();
@@ -108,25 +76,44 @@ class _MainPageState extends State<MainPage> {
     timeCoefficient = await getDateDifference();
     getCalorieBurnCoefficient().then((_) {
       setState(() {
-        ccalBurn = (timeCoefficient * calorieBurnCoefficient!).toInt();
+        ccalBurn = (timeCoefficient * calorieBurnCoefficient!);
       });
-      print('$ccalBurn');
     });
   }
 
-  void getPercentages() async{
-    calculateBurnedCalories().then((_) {
-      setState(() {
-        burnPercentage = ccalBurn / ccalMustBurn;
-        consPercentage = ccalCons / ccalMustCons;
-      });
+  void calculateCcalMustBurn() {
+    double goalCoeff = 1;
+    switch (goal) {
+      case ('Похудеть'):
+        goalCoeff = 0.75;
+        break;
+      case ('Набрать мышечную массу'):
+        goalCoeff = 1.15;
+        break;
+      case ('Сохранить текущий вес'):
+        goalCoeff = 1;
+        break;
+    }
+    setState(() {
+      ccalMustBurn = (66.74 + (13.75 * int.parse(weight)) + (5 * int.parse(height)) - (6.74 * int.parse(age)) * goalCoeff);
     });
+  }
+
+  void getPercentages() async {
+    calculateCcalMustBurn();
+    calculateBurnedCalories();
+  }
+
+  void setData() {
+    age = person.age!;
+    goal = person.goal!;
+    height = person.height!;
+    weight = person.weight!;
   }
 
   @override
   void initState() {
-    setDate();
-    getPercentages();
+    refreshPerson();
     super.initState();
   }
 
@@ -178,11 +165,11 @@ class _MainPageState extends State<MainPage> {
                         radius: 130,
                         lineWidth: 10,
                         backgroundColor: Colors.white,
-                        percent: burnPercentage,
+                        percent: (ccalBurn / ccalMustBurn),
                         // progressColor: ,
                         circularStrokeCap: CircularStrokeCap.round,
                         animation: true,
-                        center: textWidgetBuilder('$ccalBurn \nккал', 22, Colors.black),
+                        center: textWidgetBuilder('${ccalBurn.toInt()} \nккал', 22, Colors.black),
                       ),
                     ],
                   ),
@@ -208,7 +195,7 @@ class _MainPageState extends State<MainPage> {
                         radius: 130,
                         lineWidth: 10,
                         backgroundColor: Colors.white,
-                        percent: consPercentage,
+                        percent: 0,
                         progressColor: Colors.green,
                         circularStrokeCap: CircularStrokeCap.round,
                         animation: true,
