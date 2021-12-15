@@ -1,5 +1,5 @@
 # EatFit flutter project
-Fitness app
+Welcome to EatFit fitness app, our team's first flutter app.
 
 # Team
 Ravil Amangeldiuly
@@ -12,14 +12,13 @@ Nurgul Mazhit
 
 ## Goals
 
-This project is created for educational purposes for course CSS-223
-
 - Understanding the basics of Flutter technology in practice
 - Understanding mobile development patterns 
 - Implementation of the acquired knowledge in practice
+- Creation of an app that will help you improve your physique
 
 ## Users
-The project is not intended for general use, as it is created for educational purposes and only and may contain flaws
+This app can be used by everyone who wants to improve their body. In-app you can find the calorie content of products, your calorie expenditure, and training for every large muscle group with your weight.
 
 ## Solution Concept
-Requirements from teacher -> Implementation + Creative
+Implementation of requirements from teacher and necessary features
