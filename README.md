@@ -1,5 +1,5 @@
 # EatFit flutter project
-Welcome to EatFit fitness app, our team's first flutter app.
+Welcome to EatFit fitness app, our team's first flutter app. This project is fitness app created by SDU students for course CSS 223 using flutter technology.
 
 # Team
 Ravil Amangeldiuly
@@ -18,7 +18,7 @@ Nurgul Mazhit
 - Creation of an app that will help you improve your physique
 
 ## Users
-This app can be used by everyone who wants to improve their body. In application, you can write down your physical data, from which the necessary information will be calculated. 
+This app can be used by anyone who wants to improve their body. In application, you can write down your physical data, from which the necessary information will be calculated. 
 
 # Application content
 - In-app you can find the calorie content of products, your calorie expenditure, and training for every large muscle group with your own weight.
