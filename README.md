@@ -41,7 +41,7 @@ For storing personal information and recipes we used SQLite database.
 For login and registration, we used Firebase Database, but since firebase is paid, we cannot post it on Github.
 
 ## Screenshots
-![Screenshot_2021_12_21_20_29_54_714_com_example_flutter_team_project](https://user-images.githubusercontent.com/79452777/146948837-4835db8b-0f35-47ee-8716-1bd8581fd727.jpg)
+![Screenshot]<img src="https://user-images.githubusercontent.com/79452777/146948837-4835db8b-0f35-47ee-8716-1bd8581fd727.jpg" width="400" height="790">
 ![Screenshot_2021_12_21_20_30_05_760_com_example_flutter_team_project](https://user-images.githubusercontent.com/79452777/146948992-d6e13dde-f8a2-4293-b344-003e0659bd81.jpg)
 ![Screenshot_2021_12_21_20_30_45_697_com_example_flutter_team_project](https://user-images.githubusercontent.com/79452777/146949016-a0b47f1e-9ad7-4687-a124-48f24b172504.jpg)
 ![Screenshot_2021_12_21_20_30_50_022_com_example_flutter_team_project](https://user-images.githubusercontent.com/79452777/146949036-4c4717ec-f946-4536-b28d-81ad6e476980.jpg)
