@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_team_project/db/person_database.dart';
+import 'package:flutter_team_project/models/person.dart';
 import 'package:flutter_team_project/onboard/body_page_1.dart';
 import 'package:flutter_team_project/views/login_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,6 +19,16 @@ class _OnBoardState extends State<OnBoard> {
   int currentIndex = 0;
   bool isButtonDisabled = true;
   int lastIndex = 0;
+
+  int id = 0;
+  String name = 'Имя';
+  String? gender = 'Пол';
+  String? goal = 'Цель';
+  String age = '1';
+  String height = '1';
+  String weight = '1';
+  String? bmi = '1';
+  String imagePath = '';
 
   List<Widget> bodyPages = [
     const BodyPage1(),
@@ -39,6 +51,7 @@ class _OnBoardState extends State<OnBoard> {
         actions: [
           TextButton(
             onPressed: () async {
+              addPerson();
               Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => LoginScreen()));
               await _storeOnBoardInfo();
             },
@@ -52,7 +65,7 @@ class _OnBoardState extends State<OnBoard> {
           padding: const EdgeInsets.all(20),
           child: Column(
             children: [
-              bodyPages[currentIndex]
+              bodyPages[currentIndex],
             ],
           ),
         ),
@@ -99,5 +112,20 @@ class _OnBoardState extends State<OnBoard> {
         color: fontColor,
       ),
     );
+  }
+
+  Future addPerson() async {
+    final person = Person(
+        id: id,
+        name: name,
+        gender: gender,
+        goal: goal,
+        age: age,
+        height: height,
+        weight: weight,
+        bmi: bmi,
+        imagePath: imagePath
+    );
+    await PersonDatabase.instance.create(person);
   }
 }
