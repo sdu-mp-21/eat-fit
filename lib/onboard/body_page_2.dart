@@ -20,28 +20,27 @@ class _BodyPage2State extends State<BodyPage2> {
   final _formKey = GlobalKey<FormState>();
 
   int id = 0;
-  String name = "";
-  String? gender;
-  String? goal;
-  String age = "";
-  String height = "";
-  String weight = "";
-  String? bmi;
+  String name = "Имя";
+  String? gender = 'Мужчина';
+  String? goal = "Похудеть";
+  String age = "1";
+  String height = "1";
+  String weight = "1";
+  String? bmi = "1";
   String imagePath = '';
-  String? directoryPath;
-  File? dataFile;
+
 
   Future addPerson() async {
     final person = Person(
-      id: id,
-      name: name,
-      gender: gender,
-      goal: goal,
-      age: age,
-      height: height,
-      weight: weight,
-      bmi: bmi,
-      imagePath: imagePath
+        id: id,
+        name: name,
+        gender: gender,
+        goal: goal,
+        age: age,
+        height: height,
+        weight: weight,
+        bmi: bmi,
+        imagePath: imagePath
     );
     await PersonDatabase.instance.create(person);
   }
@@ -178,20 +177,20 @@ class _BodyPage2State extends State<BodyPage2> {
           _buildText('Цель', 20),
           const SizedBox(height: 10),
           DropdownButton<String>(
-            value: goal,
             items: goals.map(buildMenuItem).toList(),
             onChanged: (value) => setState((){
               goal = value;
             }),
+            value: goal,
           ),
           _buildText('Пол', 20),
           const SizedBox(height: 10),
           DropdownButton<String>(
-            value: gender,
             items: genders.map(buildMenuItem).toList(),
             onChanged: (value) => setState((){
               gender = value;
             }),
+            value: gender,
           ),
         ],
       ),
