@@ -22,8 +22,8 @@ class _OnBoardState extends State<OnBoard> {
 
   int id = 0;
   String name = 'Имя';
-  String? gender = 'Пол';
-  String? goal = 'Цель';
+  String? gender = 'Мужчина';
+  String? goal = 'Похудеть';
   String age = '1';
   String height = '1';
   String weight = '1';
